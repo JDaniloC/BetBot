@@ -1,0 +1,10 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Segoe UI,Tahoma,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Open Sans,sans-serif;
+}
+
+body {
+    background-color: #585858;
+}

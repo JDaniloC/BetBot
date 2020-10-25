@@ -1,0 +1,82 @@
+header div.login-container {
+    position: relative;
+}
+
+header div.login-container div.blur {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    z-index: 19;
+    cursor: pointer;
+    
+    background-color: rgba(0,0,0,.4);
+}
+
+header div.login-panel {
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    transform: translateY(-300px);
+    z-index: 20;
+    width: 310px;
+    margin: auto;
+    left: 0;
+    right: 0;
+
+    border-radius: 0 0 2px 2px;
+    background-color: #e4e4e4;
+    padding: 20px 10px 10px;
+
+    transition: transform .3s;
+}
+
+header div.login-panel div {
+    display: flex;
+    border: 1px solid #c3c3c3;
+    margin: 10px 0 0;
+}
+
+header div.login-panel div button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+
+    color: #333;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+} 
+
+header div.login-panel div input {
+    display: flex;
+    flex: 1 1 90%;
+    font-size: 15px;
+    padding: 0 10px;
+    margin: 0;
+    border: 0;
+    background-color: #f0f0f0;
+    color: #333;
+    border-radius: 2px;
+    height: 45px;
+}
+
+header div.login-panel > button {
+    height: 45px;
+    background-color: #126e51;
+    margin-top: 15px;
+    margin-bottom: 5px;
+
+    font-size: 15px;
+    color: #f0f0f0;
+    font-weight: 700;
+    cursor: pointer;
+
+    border: none;
+}
+
+header div.login-panel button.login:hover {
+    background-color: #168361
+}
