@@ -19,16 +19,17 @@ header nav img {
     cursor: pointer;
 }
 
-header nav button {
+header nav button, header nav a {
     cursor: pointer;
     font-size: 14px;
 
     color: #e4e4e4;
     background-color: #126e51;
+    text-decoration: none;
     border: none;
 }
 
-header nav button:hover {
+header nav button:hover, header nav a:hover {
     color: #26ffbe;
 }
 
@@ -36,14 +37,15 @@ header nav .login {
     display: none;
 }
 
-header nav div.user-container {
+header nav div.login {
     flex-direction: column;
     align-items: center;
     color: #fff;
     font-size: 11px;
+    cursor: pointer;
 }
 
-header nav div.user-container img {
+header nav div.login img {
     padding: 0;
     width: 22px;
     height: 22px;

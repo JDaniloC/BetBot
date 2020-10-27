@@ -1,0 +1,87 @@
+<nav>
+    <button onClick = "operation()"> Operação </button>
+    <button onClick = "configuration()"> Configurações </button>
+    <img src="images/logo.svg" alt="logo betbot">
+    <a href="https://t.me/JDaniloC" class = "logout"> 
+        Comprar licença 
+    </a>
+    <button class = "logout" onClick="open_login()"> 
+        Login 
+    </button>
+    
+    <a href="https://t.me/JDaniloC" class="login">
+        Se afiliar
+    </a>
+    <div class="login" onClick = "toggle_user_container()">
+        <img 
+            src="images/user.svg" alt="user icon">
+        <p> R$0,00 </p>
+    </div>
+</nav>
+
+<div class="login-container">
+    <div class="blur" onClick="close_login()"></div>
+    <div class="login-panel">
+        <div class="username">
+            <input 
+                type="text" 
+                placeholder="Usuário" 
+                autocapitalize="off" 
+                autocomplete="off" 
+                autocorrect="off"
+                id = "username"
+            >
+            <button class="clear" onClick="cleanup_username()">
+                <img src="images/x.svg"></img>
+            </button>
+        </div>
+        <div class="password">
+            <input 
+                type="password" 
+                placeholder="Senha" 
+                autocapitalize="off" 
+                autocomplete="off" 
+                autocorrect="off"
+                id = "password"
+            >
+        </div>  
+        <button onClick="handle_login()"> 
+            Login 
+        </button>
+    </div>
+</div>
+
+<div class="user-container">
+    <section class="values">
+        <div class="values">
+            <p> Valor original </p>
+            <p id = "original_value"> R$0,00 </p>
+        </div>
+        <div class="values">
+            <p> Valor atual </p>
+            <p id = "actual_value"> R$10,00 </p>
+        </div>
+        <div class="values">
+            <p> Ganho hoje </p>
+            <p id = "today_gain"> R$5,00 </p>
+        </div>
+    </section>
+    <section class="business">
+        <button>
+            <a class="beauty-btn" href="https://t.me/JDaniloC">
+                Renovar licença
+            </a>
+        </button>
+        <div class="date">
+            <p> licença desde </p>
+            <p id = "from_date"> 25/10/2020 </p>
+        </div>
+        <div class="date">
+            <p> licença até </p>
+            <p id = "to_date"> 30/10/2020 </p>
+        </div>
+        <button class="beauty-btn" onClick = "logout()">
+            Sair
+        </button>
+    </section>
+</div>
