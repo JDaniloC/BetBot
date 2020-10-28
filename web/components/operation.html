@@ -1,0 +1,105 @@
+<section class = "operation">
+</section>
+
+<script>
+    function createLabel(id, text) {
+        const label = document.createElement("label");
+        const input = document.createElement("input");
+        const span = document.createElement("span");
+        
+        input.setAttribute("id", id);
+        input.setAttribute("type", "checkbox");
+        span.textContent = text;
+
+        label.appendChild(input);
+        label.appendChild(span);
+
+        return label;
+    }
+
+    function createDiv(local, element) {
+        const div = document.createElement('div');
+        const h3 = document.createElement('h3');
+        const divContainer = document.createElement('div');
+        
+        divContainer.className = 'options-container';
+        h3.textContent = element.name;
+
+        element.chooses.forEach(choice => {
+            divContainer.appendChild(createLabel(
+                element.name + '|' + choice, choice));
+        })
+
+        div.appendChild(h3);
+        div.appendChild(divContainer);
+        local.appendChild(div);
+    }
+
+    function createTable(local, element) {
+        const div = document.createElement('div');
+        const h3 = document.createElement('h3');
+        const table = document.createElement('table');
+        
+        const titles = document.createElement('tr');
+        const columns = document.createElement('tr');
+
+        h3.textContent = element.name;
+
+        element.titles.forEach(title => {
+            const th = document.createElement('th');
+            th.textContent = title;
+            titles.appendChild(th);
+            
+            const td = document.createElement('td');
+            const input = document.createElement('input');
+            input.setAttribute("id", element.name + '|' + title);
+            input.setAttribute("type", "text");
+            td.appendChild(input);
+            columns.appendChild(td);
+        })
+
+        table.appendChild(titles);
+        table.appendChild(columns);
+        div.appendChild(h3);
+        div.appendChild(table);
+        local.appendChild(div);
+    }
+
+    function generateOptions() {
+        const triOpcionais = [
+            { name: 'Resultado Final', chooses: ["casa", "Empate", "fora"] },
+            { 
+                name: 'Dupla Hipótese', 
+                chooses: ["casa ou Empate", "Empate ou fora", "casa ou fora"] 
+            },
+            { name: 'Intervalo - Resultado', chooses: ["casa", "Empate", "fora"] },
+            { name: 'Xº Gol', chooses: ["casa", "Sem Xº gol", "fora"] },
+            { name: '2º Tempo - Para Ganhar', chooses: ["casa", "Empate", "fora"] }
+        ]
+
+        const valorMaisMenos = ['Valor', 'Mais de', 'Menos de']
+        const tables = [
+            { name: 'Partida - Gols', titles: valorMaisMenos },
+            { name: 'Partida - Gols - Mais Opções', titles: valorMaisMenos },
+            { name: 'Encontro - Escanteios', titles: ['Valor', 'Mais de', 'Exatamente', 'Menos de']},
+            { name: 'Escanteios - 2 Opções', titles: valorMaisMenos },
+            { name: 'Handicap Asiático (0-1)', titles: ['casa', 'fora'] },
+            { name: 'Gols +/- (X-X)', titles: valorMaisMenos },
+            { name: 'Resultado Correto', titles: [1, "X", 2] },
+            { name: 'Escanteios Asiáticos', titles: valorMaisMenos },
+            { name: 'Escanteios - Primeiro a Cobrar', titles: ['casa', 'fora', 'Nenhum'] }
+        ]
+
+        const local = document.querySelector('section.operation');
+        
+        triOpcionais.forEach(element => {
+            createDiv(local, element);
+        })
+
+        tables.forEach(element => {
+            createTable(local, element);
+        })
+    }
+
+    generateOptions();
+</script>

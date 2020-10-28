@@ -1,3 +1,7 @@
+$(function(){
+    $("main").load("components/welcome.html"); 
+});
+
 function shakeInputs() {
     const shakeAnimation = [
         [ 

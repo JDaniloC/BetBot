@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 65 65" enable-background="new 0 0 65 65" xml:space="preserve">
+<g>
+	<g>
+		<path fill="#F1786B" d="M56.8,27.1L34.9,5.2c-1.3-1.3-3.5-1.3-4.8,0L8.2,27.1L6.1,25L28,3.1c1.2-1.2,2.8-1.9,4.5-1.9    s3.3,0.7,4.5,1.9L58.9,25L56.8,27.1z"/>
+	</g>
+	<path fill="#D45947" d="M38.8,4.9L37,3.1c-1.2-1.2-2.8-1.9-4.5-1.9S29.2,1.9,28,3.1l-1.8,1.8c0,0.3-0.1,0.6-0.1,0.9   c0,1,0.2,1.9,0.6,2.8l3.3-3.3c1.3-1.3,3.5-1.3,4.8,0l3.3,3.3c0.4-0.8,0.6-1.8,0.6-2.8C38.9,5.5,38.8,5.2,38.8,4.9z"/>
+	<g>
+		<polygon fill="#D45947" points="8.3,22.8 6.1,25 8.2,27.1 12.5,22.8   "/>
+		<polygon fill="#D45947" points="52.5,22.8 56.8,27.1 58.9,25 56.7,22.8   "/>
+	</g>
+	<path fill="#52AFA8" d="M61.5,24.7H3.5c-1.6,0-3,1.3-3,3v33.9c0,1.6,1.3,3,3,3h58.1c1.6,0,3-1.3,3-3V27.6   C64.5,26,63.2,24.7,61.5,24.7z"/>
+	<path fill="#5AC8AE" d="M58.7,29.4H6.3c-0.5,0-0.9,0.4-0.9,0.9v28.6c0,0.5,0.4,0.9,0.9,0.9h52.5c0.5,0,0.9-0.4,0.9-0.9V30.3   C59.6,29.8,59.2,29.4,58.7,29.4z"/>
+	<circle fill="#FBD984" cx="32.5" cy="5.8" r="5.3"/>
+	<g>
+		<path fill="#EFF3F5" d="M20.2,48.5c-1.1,1.1-2.4,1.6-4,1.6s-2.9-0.5-4-1.6c-1.1-1.1-1.6-2.4-1.6-4c0-1.6,0.5-2.9,1.6-4    c1.1-1.1,2.4-1.6,4-1.6s2.9,0.5,4,1.6c1.1,1.1,1.6,2.4,1.6,4C21.8,46.2,21.2,47.5,20.2,48.5z M18.8,41.8c-0.7-0.8-1.6-1.1-2.7-1.1    s-2,0.4-2.7,1.1c-0.7,0.8-1.1,1.7-1.1,2.8c0,1.1,0.4,2,1.1,2.8c0.7,0.8,1.6,1.1,2.7,1.1s2-0.4,2.7-1.1c0.7-0.8,1.1-1.7,1.1-2.8    C19.9,43.5,19.6,42.6,18.8,41.8z"/>
+		<path fill="#EFF3F5" d="M31.3,40.2c0.7,0.6,1.1,1.6,1.1,2.9c0,1.3-0.4,2.3-1.1,2.9c-0.8,0.6-1.9,0.9-3.5,0.9h-1.9V50h-1.8V39.3    h3.7C29.4,39.3,30.6,39.6,31.3,40.2z M30.1,44.7c0.4-0.4,0.5-0.9,0.5-1.7c0-0.7-0.2-1.3-0.7-1.6c-0.5-0.3-1.2-0.5-2.2-0.5h-1.8    v4.3H28C29,45.2,29.7,45,30.1,44.7z"/>
+		<path fill="#EFF3F5" d="M42.2,39.3V41h-5.7v2.8h5.2v1.6h-5.2v2.9h5.9V50h-7.7V39.3H42.2z"/>
+		<path fill="#EFF3F5" d="M52.7,39.3h1.8V50h-2l-6.1-7.8V50h-1.8V39.3h1.8l6.2,8V39.3z"/>
+	</g>
+</g>
+
+	<metadata>
+		<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+			<rdf:Description about="https://iconscout.com/legal#licenses" dc:title="3 101 open tag notice board store timing" dc:description="3 101 open tag notice board store timing" dc:publisher="Iconscout" dc:date="2017-05-20" dc:format="image/svg+xml" dc:language="en">
+				<dc:creator>
+					<rdf:Bag>
+						<rdf:li>Creative Stall</rdf:li>
+					</rdf:Bag>
+				</dc:creator>
+			</rdf:Description>
+		</rdf:RDF>
+    </metadata></svg>

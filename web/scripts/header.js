@@ -11,15 +11,28 @@ function toggle_user_container() {
     }
 }
 
+function welcome() {
+    $(function(){
+        $("main").load("components/welcome.html"); 
+    });
+}
+
 function operation() {
     if (localStorage.getItem('account') === null) {
         console.log('Abrindo login')
         return open_login()
     }
+    $(function(){
+        $("main").load("components/operation.html"); 
+    });
 }
 
 function configuration() {
     if (localStorage.getItem('account') === null) {
         return open_login()
     }
+
+    $(function(){
+        $("main").load("components/config.html"); 
+    });
 }

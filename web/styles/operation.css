@@ -1,0 +1,64 @@
+section.operation {
+    display: flex;
+    flex-direction: column;
+    padding: 1em 2em;
+    color: #e4e4e4;
+}
+
+section.operation div > div, section.operation div > table {
+    margin: 1em 0;
+    border-top: 1px solid #636363;
+    border-bottom: 1px solid #367a65;
+}
+
+section.operation div.options-container {
+    display: flex;
+    width: 95vw;
+}
+
+section.operation div.options-container label {
+    cursor: pointer;
+    flex: 1;
+}
+
+section.operation div.options-container input:checked + span {
+    color: #126e51;
+    background-color: #e4e4e4;
+}
+
+section.operation div.options-container label span {
+    display: block;
+    text-align: center;
+    padding: 1em;
+}
+
+section.operation div.options-container label:hover span{
+    background-color: #cecece;
+    color: #545454;
+}
+
+section.operation table {
+    width: 95vw;
+}
+
+section.operation table th {
+    padding-top: 1em;
+}
+
+section.operation table th:first-child, 
+section.operation table td:first-child {
+    border-right: 1px solid #636363;
+}
+
+section.operation table td {
+    padding: 1em;
+}
+
+section.operation table input {
+    text-align: center;
+    width: 100%;
+}
+
+div.options-container label input {
+    display: none;
+}
