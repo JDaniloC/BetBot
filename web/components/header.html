@@ -19,7 +19,7 @@
     </div>
 </nav>
 
-<div class="login-container">
+<div class="login-container" onload="loaded()">
     <div class="blur" onClick="close_login()"></div>
     <div class="login-panel">
         <div class="username">
@@ -45,7 +45,7 @@
                 id = "password"
             >
         </div>  
-        <button onClick="handle_login()"> 
+        <button class = "green-btn" onClick="handle_login()"> 
             Login 
         </button>
     </div>
@@ -85,3 +85,11 @@
         </button>
     </section>
 </div>
+
+<script>
+    function loaded() {
+        if (localStorage.getItem('account')) {
+            login(JSON.parse(localStorage.getItem('account')))
+        }
+    }
+</script>

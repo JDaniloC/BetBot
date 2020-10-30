@@ -11,4 +11,25 @@ body {
 
 main{
     padding: 3em 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button.green-btn {
+    height: 45px;
+    background-color: #126e51;
+    margin-top: 15px;
+    margin-bottom: 5px;
+
+    font-size: 15px;
+    color: #f0f0f0;
+    font-weight: 700;
+    cursor: pointer;
+
+    border: none;
+}
+
+button.green-btn:hover {
+    background-color: #0d835e;
 }

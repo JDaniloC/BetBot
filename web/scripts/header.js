@@ -19,7 +19,6 @@ function welcome() {
 
 function operation() {
     if (localStorage.getItem('account') === null) {
-        console.log('Abrindo login')
         return open_login()
     }
     $(function(){

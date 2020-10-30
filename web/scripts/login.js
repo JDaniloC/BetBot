@@ -54,7 +54,7 @@ function fill_fields(account) {
 }
 
 function login(account) {
-    localStorage.setItem('account', account);
+    localStorage.setItem('account', JSON.stringify(account));
     document.querySelectorAll('.logout').forEach(item => {
         item.style.display = 'none'
     });
@@ -63,6 +63,7 @@ function login(account) {
     });
 
     fill_fields(account);
+    close_login()
 }
 
 function handle_login() {
@@ -89,6 +90,7 @@ function handle_login() {
         "to_date": '30/10/2000',
         "original_value": 0.0, 
         "actual_value": 0.5, 
+        "value": 10,
         "settings": {
             "stopwin": 10,
             "stoploss": 10,
@@ -105,7 +107,6 @@ function handle_login() {
             ["Próximos 10 Minutos", ["mais de", "Escanteios"], 3]
         ]
     });
-    close_login()
 
     return
 
@@ -114,7 +115,6 @@ function handle_login() {
             shakeInputs();
         } else {
             login(result);
-            close_login()
         }
     })
 }
@@ -129,4 +129,5 @@ function logout() {
     document.querySelectorAll('.login').forEach(item => {
         item.style.display = 'none'
     });
+    welcome();
 }

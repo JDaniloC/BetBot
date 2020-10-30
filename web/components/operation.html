@@ -1,5 +1,6 @@
 <section class = "operation">
 </section>
+<button class="green-btn"> Operar </button>
 
 <script>
     function createLabel(id, text) {
@@ -7,8 +8,10 @@
         const input = document.createElement("input");
         const span = document.createElement("span");
         
+        input.setAttribute("name", id.split("|")[0]);
         input.setAttribute("id", id);
         input.setAttribute("type", "checkbox");
+        input.onclick = handle_select;
         span.textContent = text;
 
         label.appendChild(input);
@@ -52,7 +55,11 @@
             
             const td = document.createElement('td');
             const input = document.createElement('input');
+            input.onchange = handle_change;
+            input.addEventListener('input', function() { element.onInput(input) })
+            input.placeholder = element.placeholder;
             input.setAttribute("id", element.name + '|' + title);
+            input.setAttribute("maxlength", element.max + 1);
             input.setAttribute("type", "text");
             td.appendChild(input);
             columns.appendChild(td);
@@ -66,33 +73,96 @@
     }
 
     function generateOptions() {
-        const triOpcionais = [
+        const opcionais = [
             { name: 'Resultado Final', chooses: ["casa", "Empate", "fora"] },
             { 
                 name: 'Dupla Hipótese', 
-                chooses: ["casa ou Empate", "Empate ou fora", "casa ou fora"] 
-            },
+                chooses: ["casa ou Empate", "Empate ou fora", "casa ou fora"] },
+            { name: 'Para se Classificar', chooses: ["casa", "fora"]}, 
             { name: 'Intervalo - Resultado', chooses: ["casa", "Empate", "fora"] },
             { name: 'Xº Gol', chooses: ["casa", "Sem Xº gol", "fora"] },
-            { name: '2º Tempo - Para Ganhar', chooses: ["casa", "Empate", "fora"] }
+            { name: '2º Tempo - Para Ganhar', chooses: ["casa", "Empate", "fora"]},
+            { name: 'Jogo Ganho na Prorrogação', chooses: ['Sim', 'Não']},
+            { name: 'Jogo Ganho Após os Pênaltis', chooses: ['Sim', 'Não']},
+            { name: 'Empate Anula a Aposta', chooses: ['casa', 'fora'] },
+            { name: 'Mais Escanteios', chooses: ['casa', 'Empate', 'fora'] },
+            { name: 'Último Time a Marcar', chooses: ['casa', 'Sem Gols', 'fora'] },
+            { name: 'Gols Ímpar/Par', chooses: ['Ímpar', 'Par'] },
+            { name: 'Para Ambos os Times Marcarem', chooses: ['Sim', 'Não'] },
+            { 
+                name: '2° Tempo - Para Ambos os Times Marcarem', 
+                chooses: ['Sim', 'Não'] },
+            { name: '2° Tempo - Para Ganhar', chooses: ['casa', 'Empate', 'fora'] }
         ]
 
-        const valorMaisMenos = ['Valor', 'Mais de', 'Menos de']
+        const maisMenos = ['Mais de', 'Menos de']
+        const exatamente = ['Mais de', 'Exatamente', 'Menos de']
         const tables = [
-            { name: 'Partida - Gols', titles: valorMaisMenos },
-            { name: 'Partida - Gols - Mais Opções', titles: valorMaisMenos },
-            { name: 'Encontro - Escanteios', titles: ['Valor', 'Mais de', 'Exatamente', 'Menos de']},
-            { name: 'Escanteios - 2 Opções', titles: valorMaisMenos },
-            { name: 'Handicap Asiático (0-1)', titles: ['casa', 'fora'] },
-            { name: 'Gols +/- (X-X)', titles: valorMaisMenos },
-            { name: 'Resultado Correto', titles: [1, "X", 2] },
-            { name: 'Escanteios Asiáticos', titles: valorMaisMenos },
-            { name: 'Escanteios - Primeiro a Cobrar', titles: ['casa', 'fora', 'Nenhum'] }
+            { 
+                name: 'Partida - Gols', titles: maisMenos, max: 3, 
+                onInput: floatFormatter, placeholder: "Ex: 1.5" },
+            { 
+                name: 'Partida - Gols - Mais Opções', titles: maisMenos, 
+                max: 3, onInput: floatFormatter, placeholder: "Ex: 0.5" },
+            { 
+                name: 'Encontro - Escanteios', titles: exatamente, 
+                max: 2, onInput: intFormatter, placeholder: 'Ex: 5' },
+            { 
+                name: 'Escanteios - 2 Opções', titles: maisMenos, max: 3, 
+                onInput: floatFormatter, placeholder: "Ex: 6.5" },
+            { 
+                name: '1° Tempo - Escanteios', titles: exatamente, 
+                max: 2, onInput: intFormatter, placeholder: 'Ex: 1' },
+            { 
+                name: '2° Tempo - Escanteios', titles: exatamente, 
+                max: 2, onInput: intFormatter, placeholder: 'Ex: 0' },
+            { 
+                name: 'Handicap Asiático (X-X)', titles: ['casa', 'fora'], max: 9,
+                onInput: handicapFormatter, placeholder: "Ex: 0.0,+0.5" },
+            { 
+                name: 'Gols +/- (X-X)', titles: maisMenos, max: 7,
+                onInput: intervalFormatter, placeholder: "Ex: 0.5,1.0" },
+            { 
+                name: 'Resultado Correto', titles: [1, "X", 2], max: 3,
+                onInput: golsFormatter, placeholder: "Ex: 1-0" },
+            { 
+                name: 'Escanteios Asiáticos', titles: maisMenos, max: 3, 
+                onInput: floatFormatter, placeholder: "Ex: 4.5" },
+            { 
+                name: 'Escanteios - Primeiro a Cobrar', titles: ['casa', 'fora', 'Nenhum'], 
+                max: 2, onInput: intFormatter, placeholder: 'Ex: 9' },
+            { 
+                name: 'Número de Cartões', titles: maisMenos, max: 3, 
+                onInput: floatFormatter, placeholder: "Ex: 3.5" },
+            { 
+                name: 'Handicap - 3 Opções', titles: ['casa', 'Empate', 'fora'], 
+                max: 2, onInput: handicapFormatter, placeholder: "Ex: +3" },
+            { 
+                name: 'casa - Golos', titles: maisMenos, max: 3, 
+                onInput: floatFormatter, placeholder: "Ex: 1.5" },
+            { 
+                name: 'fora - Golos', titles: maisMenos, max: 3, 
+                onInput: floatFormatter, placeholder: "Ex: 2.5" },
+            { 
+                name: 'Total de Gols - X° Tempo', titles: maisMenos, 
+                max: 2, onInput: intFormatter, placeholder: 'Ex: 2' },
+            { 
+                name: '1° Parte - Handicap Asiático (X-X)', titles: ['casa', 'fora'], 
+                max: 9, onInput: handicapFormatter, placeholder: "Ex: 0.0,-0.5" },
+            { 
+                name: '1° Parte - Gols +/- (X-X)', titles: maisMenos, max: 9,
+                onInput: intervalFormatter, placeholder: "Ex: 2.5,3.0" },
+            { 
+                name: 'Resultado Correcto - Intervalo', titles: [1, "X", 2], 
+                max: 3, onInput: golsFormatter, placeholder: "Ex: 4-1" },
+            { 
+                name: '1° Tempo - Escanteios Asiáticos', titles: maisMenos, 
+                max: 2, onInput: intFormatter, placeholder: 'Ex: 3' }
         ]
 
         const local = document.querySelector('section.operation');
         
-        triOpcionais.forEach(element => {
+        opcionais.forEach(element => {
             createDiv(local, element);
         })
 

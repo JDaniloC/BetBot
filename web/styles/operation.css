@@ -1,19 +1,36 @@
 section.operation {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     padding: 1em 2em;
+    flex-wrap: wrap;
+    justify-content: space-between;
     color: #e4e4e4;
+}
+
+section.operation > div {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 30%;
+    flex-grow: 1;
+    
+    min-width: 430px;
+    padding: 1em;
+    margin: 0.5em 1em;
+    border-radius: 6px;
+    
+    background-color: #505050;
+    text-align: center;
 }
 
 section.operation div > div, section.operation div > table {
     margin: 1em 0;
     border-top: 1px solid #636363;
     border-bottom: 1px solid #367a65;
+    width: 100%;
 }
 
 section.operation div.options-container {
     display: flex;
-    width: 95vw;
 }
 
 section.operation div.options-container label {
@@ -37,10 +54,6 @@ section.operation div.options-container label:hover span{
     color: #545454;
 }
 
-section.operation table {
-    width: 95vw;
-}
-
 section.operation table th {
     padding-top: 1em;
 }
@@ -61,4 +74,8 @@ section.operation table input {
 
 div.options-container label input {
     display: none;
+}
+
+section.operation + button {
+    width: 300px;
 }

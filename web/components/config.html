@@ -6,42 +6,42 @@
                 <h3> Stop Win </h3>
                 <p> Valor máximo de ganho por dia </p>
             </div>
-            <input type="text" placeholder="Valor do Stop Win">
+            <input type="text" placeholder="R$0,00" oninput = "moneyFormatter(this)">
         </li>
         <li>
             <div>
                 <h3> Stop Loss </h3>
                 <p> Valor máximo de perda por dia </p>
             </div>
-            <input type="text" placeholder="Valor do Stop Loss">
+            <input type="text" placeholder="R$0,00" oninput = "moneyFormatter(this)">
         </li>
         <li>
             <div>
                 <h3> Máximo de Gales </h3>
                 <p> Se perder, máximo de vezes que irá aumentar a aposta </p>
             </div>
-            <input type="text" placeholder="Número de gales">
+            <input type="text" placeholder="Ex: 2" oninput = "intFormatter(this)">
         </li>
         <li>
             <div>
                 <h3> Máximo de operações </h3>
                 <p> Máximo de operações simultâneas </p>
             </div>
-            <input type="text" placeholder="Máximo de operações">
+            <input type="text" placeholder="Ex: 4" oninput = "intFormatter(this)">
         </li>
         <li>
             <div>
                 <h3> Máximo de tempo </h3>
-                <p> Tempo mínimo para se operar </p>
+                <p> Tempo de partida mínimo para se operar </p>
             </div>
-            <input type="text" placeholder="Tempo mínimo">
+            <input type="text" placeholder="Ex: 45" oninput = "intFormatter(this)">
         </li>
         <li>
             <div>
                 <h3> Odd mínimo </h3>
                 <p> Valor multiplicativo mínimo para uma aposta </p>
             </div>
-            <input type="text" placeholder="Odd mínimo">
+            <input type="text" placeholder="Ex: 1.5" oninput = "floatFormatter(this)">
         </li>
         <li class = "gols">
             <div>
@@ -53,9 +53,9 @@
                 <input type="checkbox" name="gol-filter" id="gol-filter">
             </div>
             <div class = "between">
-                <input type="text" placeholder="Casa">
+                <input type="text" placeholder="Casa" oninput = "intFormatter(this)">
                 X
-                <input type="text" placeholder="Visitante">
+                <input type="text" placeholder="Visitante" oninput = "intFormatter(this)">
             </div>
         </li>
     </ul>

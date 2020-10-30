@@ -63,20 +63,6 @@ header div.login-panel div input {
     height: 45px;
 }
 
-header div.login-panel > button {
-    height: 45px;
-    background-color: #126e51;
-    margin-top: 15px;
-    margin-bottom: 5px;
-
-    font-size: 15px;
-    color: #f0f0f0;
-    font-weight: 700;
-    cursor: pointer;
-
-    border: none;
-}
-
 header div.login-panel button.login:hover {
     background-color: #168361
 }
