@@ -4,68 +4,69 @@ from widgets import *
 email = "testlearnbet"
 senha = "1231231414"
 
-browser = Browser()
-fast = WebDriverWait(browser, 5)
-wait = WebDriverWait(browser, 40)
+class BetBot:
+    def __init__(self, config):
+        self.config = config
+        self.browser = Browser()
+        self.fast = WebDriverWait(self.browser, 5)
+        self.wait = WebDriverWait(self.browser, 40)
 
-# Carregar
-browser.get("https://www.bet365.com/")
-esperar_sumir(wait, ".bl-Preloader_MainHeader")
+        # Carregar
+        self.browser.get("https://www.bet365.com/")
+        esperar_sumir(self.wait, ".bl-Preloader_MainHeader")
 
-# Login
-login(wait, email, senha)
-tirar_notificacoes(browser, wait)
-banca_inicial = banca(fast)
+        # Login
+        login(self.wait, email, senha)
+        tirar_notificacoes(self.browser, self.wait)
 
-# def aceitar_aposta():
-#     apertar_botao(wait, ".bs-AcceptButton_Text ")
+        self.banca_inicial = banca(self.fast)
+        self.golsFilter = (self.config["filters"]['golsFilter'][1] 
+            if self.config["filters"]['golsFilter'][0] else False)
+        self.maxBet = self.config["settings"]['maxBet']
+        self.percorrer_jogos()
 
-def percorrer_jogos(requerimentos):
-    jogos = [0]
-    num_apostas = 0
-    i = 0
-    while i < len(jogos) and num_apostas < requerimentos['maximo']:
-        jogos = devolve_jogos(wait)
-        jogo = jogos[i]
-        i += 1
-        
-        if filtra_tempo(jogo, requerimentos['tempo']):
-            gols = requerimentos['filtro_gols']
-            if gols and gols != numero_gols(jogo):
-                continue
+    # def aceitar_aposta():
+    #     apertar_botao(self.wait, ".bs-AcceptButton_Text ")
+
+    def percorrer_jogos(self):
+        def replace_column(column, casa, fora):
+            replaces = lambda x: x.replace("casa", casa).replace("fora", fora)
+            if type(column) == list:
+                column = [replaces(x) for x in column]
+            else: column = replaces(column)
+            return column
+
+        jogos = [0]
+        num_apostas = 0
+        i = 0
+        while i < len(jogos) and num_apostas < self.maxBet:
+            jogos = devolve_jogos(self.wait)
+            jogo = jogos[i]
+            i += 1
             
-            try: jogo.click()
-            except: jogo.click()
-            
-            try: abrir_opcoes(fast)
-            except: 
-                browser.back()
-                continue
-
-            for aposta in requerimentos['apostas']:
-                title, column, valor = aposta
-                opcao = procura_opcao(fast, title)
-                if not opcao:
+            if filtra_tempo(jogo, self.config["filters"]['maxTime']):
+                if self.golsFilter and self.golsFilter != numero_gols(jogo):
                     continue
-                if procura_aposta(opcao, column):
-                    adicionar_valor(wait, fast, valor)
-                    num_apostas += 1
-                    if num_apostas > requerimentos['maximo']:
-                        break
-            browser.back()
-
-requerimentos = {
-    "stopwin": 10,
-    "stoploss": 10,
-    "gales": 2,
-    "filtro_gols": [0, 0],
-    "tempo": 45,
-    "apostas": [
-        ["Partida - Gols", ("mais de", "1.5"), 10],
-        ["Gols +/-", ("mais de", "2.5"), 5],
-        ["Próximos 10 Minutos", ("mais de", "Escanteios"), 3]
-    ],
-    "maximo": 6 # 20 é o máximo
-}
-
-percorrer_jogos(requerimentos)
+                
+                try: jogo.click()
+                except: jogo.click()
+                
+                try: abrir_opcoes(self.fast)
+                except: 
+                    self.browser.back()
+                    continue
+                
+                casa, fora = nome_times(self.fast)
+                for aposta in self.config['search']:
+                    title, column, valor = aposta
+                    column = replace_column(column, casa, fora)
+                    opcao = procura_opcao(self.fast, title)
+                    if not opcao:
+                        continue
+                    if procura_aposta(opcao, column):
+                        adicionar_valor(self.wait, self.fast, valor)
+                        num_apostas += 1
+                        if num_apostas > self.maxBet:
+                            break
+                self.browser.back()
+        print("Fim da procura")

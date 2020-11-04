@@ -34,13 +34,13 @@ class Browser(Chrome):
 
 # Abstrações
 
-def login(wait, email, password):
+def login(wait: WebDriverWait, email: str, password: str):
     apertar_botao(wait, ".hm-MainHeaderRHSLoggedOutWide_Login ")
     preencher_campo(wait, ".lms-StandardLogin_Username ", email)
     preencher_campo(wait, ".lms-StandardLogin_Password ", password)
     apertar_botao(wait, ".lms-StandardLogin_LoginButton ")
 
-def tirar_notificacoes(browser, wait):
+def tirar_notificacoes(browser: Chrome, wait: WebDriverWait):
     try:
         browser.switch_to.frame(encontra_elementos(wait, ".lp-UserNotificationsPopup_Frame ")[0])
         apertar_botao(wait, "#remindLater")
@@ -49,11 +49,11 @@ def tirar_notificacoes(browser, wait):
             except: pass
     except: pass
 
-def devolve_jogos(wait):
+def devolve_jogos(wait: WebDriverWait) -> list:
     return encontra_filhos(encontra_elementos(
         wait, ".him-Classification ")[0], ".him-DetailsTwoWay ")
 
-def filtra_tempo(jogo, maximo):
+def filtra_tempo(jogo: WebElement, maximo: int) -> bool:
     try:
         hora_min = encontra_filhos(
             jogo, ".him-InPlayTimer "
@@ -67,14 +67,14 @@ def filtra_tempo(jogo, maximo):
         return False
     return True
 
-def abrir_opcoes(wait):
+def abrir_opcoes(wait: WebDriverWait):
     time.sleep(6)
     botoes = encontra_elementos(wait, '[class="sip-MarketGroupButton "]')
     for botao in botoes:
         try: botao.click()
         except: pass
 
-def procura_opcao(wait, nome):
+def procura_opcao(wait: WebDriverWait, nome: str) -> WebElement or bool:
     opcoes = encontra_elementos(wait, '.sip-MarketGroup ')
     for opcao in opcoes:
         titulo = encontra_filhos(opcao, '.sip-MarketGroupButton ')[0]
@@ -82,7 +82,7 @@ def procura_opcao(wait, nome):
             return opcao
     return False
 
-def selecionar_info_tabela(opcao, info, medida):
+def selecionar_info_tabela(opcao: WebElement, info: str, medida: float) -> WebElement:
     local = -1
     for index, linha in enumerate(
         encontra_filhos(opcao, ".srb-ParticipantLabelCentered ")):
@@ -99,16 +99,15 @@ def selecionar_info_tabela(opcao, info, medida):
 
     return encontra_filhos(
         encontra_filhos(opcao, ".gl-Market ")[indice],
-        ".gl-ParticipantOddsOnly"
-    )[local]
+        ".gl-ParticipantOddsOnly")[local]
 
-def seleciona_info_botoes(opcao, info):
+def seleciona_info_botoes(opcao: WebElement, info: str) -> WebElement or bool:
     for coluna in encontra_filhos(opcao, ".gl-Participant_General "):
-        if info.lower() in coluna.text.split("\n")[0].lower():
+        if info == coluna.text.split("\n")[0]:
             return coluna
     return False
 
-def procura_aposta(opcao, info):
+def procura_aposta(opcao: WebElement, info: str or tuple) -> bool:
     if type(info) == tuple:
         coluna, medida = info
         botao = selecionar_info_tabela(opcao, coluna, medida)
@@ -120,7 +119,7 @@ def procura_aposta(opcao, info):
         return True
     return False
 
-def adicionar_valor(wait, fast, valor):
+def adicionar_valor(wait: WebDriverWait, fast: WebDriverWait, valor: float) -> bool:
     atribuiu = False
     try:
         time.sleep(2)
@@ -140,7 +139,7 @@ def adicionar_valor(wait, fast, valor):
 
     return atribuiu
 
-def atribuir_valor(wait, valor):
+def atribuir_valor(wait: WebDriverWait, valor: float) -> bool:
     # jogadas = encontra_elementos(wait, 
     #     ".bss-NormalBetItem_ContentWrapper ")
     # for jogada in reversed(jogadas):
@@ -148,8 +147,7 @@ def atribuir_valor(wait, valor):
     #         encontra_filhos(jogada, 
     #             ".bss-StakeBox_StakeValueInput"
     #         )[0].send_keys(valor)
-    entradas = encontra_elementos(wait, 
-                ".bss-StakeBox_StakeValueInput")
+    entradas = encontra_elementos(wait, ".bss-StakeBox_StakeValueInput")
     for entrada in entradas:
         if entrada.get_attribute("value") == "Valor de Aposta":
             entrada.send_keys(valor)
@@ -158,27 +156,32 @@ def atribuir_valor(wait, valor):
 
 # Informações
 
-def abrir_escanteios(wait):
+def abrir_escanteios(wait: WebDriverWait) -> bool:
     for opcao in encontra_elementos(wait, ".ipe-GridHeaderTabLink "):  
         if "Escanteios" in opcao.text: 
             opcao.click()
             return True
     return False
 
-def banca(wait):
+def banca(wait: WebElement) -> float:
     texto_banca = encontra_elementos(
         wait, ".hm-Balance ")[0].text
     print("Banca:", texto_banca)
     return float(texto_banca.strip("R$").replace(",", "."))
 
-def numero_gols(jogo):
+def nome_times(wait: WebDriverWait) -> tuple:
+    return encontra_elementos(
+        wait, ".ipe-EventHeader_Fixture"
+    )[0].text.split(" v ")
+
+def numero_gols(jogo: WebElement) -> list:
     lista_gols = encontra_filhos(jogo,
         ".him-StandardScores_Scores "
     )[0].text.split("\n")
     print("Gols:", " x ".join(lista_gols))
     return list(map(int, lista_gols))
 
-def numero_escanteios(wait):
+def numero_escanteios(wait: WebDriverWait) -> int:
     texto_escanteios = encontra_elementos(wait, 
         ".sip-MarketGroup_Info ")[0].text
     print(texto_escanteios)
@@ -196,17 +199,15 @@ def esperar_sumir(wait: WebDriverWait, selector: str):
     wait.until(EC.invisibility_of_element(
         (By.CSS_SELECTOR, selector)))
 
-def preencher_campo(
-    wait: WebDriverWait, selector: str, valor: str):
+def preencher_campo(wait: WebDriverWait, selector: str, valor: str):
     wait.until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, selector))
     ).send_keys(valor)
 
-def encontra_filhos(element: WebElement, selector: str):
+def encontra_filhos(element: WebElement, selector: str) -> list:
     return element.find_elements_by_css_selector(selector)
 
-def encontra_elementos(
-    wait: WebDriverWait, selector: str):
+def encontra_elementos(wait: WebDriverWait, selector: str) -> list:
     return wait.until(
         EC.presence_of_all_elements_located(
             (By.CSS_SELECTOR, selector)))

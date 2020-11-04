@@ -97,12 +97,12 @@ function handle_login() {
         "settings": {
             "stopWin": 10,
             "stopLoss": 10,
+            "maxBet": 6,
             "maxGales": 2
         },
         "filters": {
             "golsFilter": [true, [0, 0]],
             "maxTime": 45,
-            "maxBet": 6,
             "minOdd": 0
         },
         "search": [

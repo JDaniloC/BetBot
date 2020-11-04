@@ -7,7 +7,7 @@ function handle_select(event) {
         (x) => (x[0] !== title))
 
     if (input.checked) {
-        account.search.push([title, option, account.value])
+        account.search.push([title, option, 2])
     } 
     
     localStorage.setItem('account', JSON.stringify(account));
@@ -22,7 +22,7 @@ function handle_change(event) {
         (x) => (x[0] !== title))
     if (input.value !== "") {
         account.search.push(
-            [title, [option, input.value], account.value]);
+            [title, [option, input.value], 2]);
     }
     
     localStorage.setItem('account', JSON.stringify(account));
@@ -32,5 +32,5 @@ function handle_change(event) {
 
 function operate() {
     const account = JSON.parse(localStorage.getItem('account'));
-    console.log(account);
+    eel.operate(account);
 }

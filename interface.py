@@ -1,5 +1,6 @@
-import eel, json, time
 from datetime import datetime
+from bot import BetBot
+import eel, json, time
 
 @eel.expose
 def handle_login(account):
@@ -18,6 +19,10 @@ def handle_login(account):
         conta['to_date'] = datetime.fromtimestamp(conta['to_date']).strftime('%d/%m/%Y')
         return conta
     return False
+
+@eel.expose
+def operate(account):
+    BetBot(account)
 
 eel.init('web')
 eel.start('index.html')
