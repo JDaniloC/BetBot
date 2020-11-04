@@ -29,3 +29,8 @@ function handle_change(event) {
 
     console.log(account)
 }
+
+function operate() {
+    const account = JSON.parse(localStorage.getItem('account'));
+    console.log(account);
+}

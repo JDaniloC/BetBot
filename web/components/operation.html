@@ -1,6 +1,6 @@
 <section class = "operation">
 </section>
-<button class="green-btn"> Operar </button>
+<button class="green-btn" onclick="operate()"> Operar </button>
 
 <script>
     function createLabel(id, text) {
@@ -77,7 +77,8 @@
             { name: 'Resultado Final', chooses: ["casa", "Empate", "fora"] },
             { 
                 name: 'Dupla Hipótese', 
-                chooses: ["casa ou Empate", "Empate ou fora", "casa ou fora"] },
+                chooses: 
+                    ["casa ou Empate", "Empate ou fora", "casa ou fora"] },
             { name: 'Para se Classificar', chooses: ["casa", "fora"]}, 
             { name: 'Intervalo - Resultado', chooses: ["casa", "Empate", "fora"] },
             { name: 'Xº Gol', chooses: ["casa", "Sem Xº gol", "fora"] },
@@ -171,5 +172,23 @@
         })
     }
 
+    function load_searches() { 
+        const account = JSON.parse(localStorage.getItem('account'));
+        
+        account.search.forEach(element => {
+            var betName = element[0];
+            if (typeof(element[1]) == "string") {
+                document.querySelector(
+                    `#${betName}\\|${element[1]}`.replaceAll(" ", "\\ ")
+                ).checked = true;
+            } else {
+                document.querySelector(
+                `#${betName}\\|${element[1][0]}`.replaceAll(" ", "\\ ")
+                ).value = element[1][1];
+            }
+        })
+    }
+
     generateOptions();
+    load_searches();
 </script>

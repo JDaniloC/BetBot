@@ -40,17 +40,19 @@ function cleanup_username() {
     username.value = '';
 }
 
-function fill_fields(account) {
-    document.querySelector("#original_value"
-        ).textContent = `R$${account.original_value.toFixed(2)}`
-    document.querySelector("#actual_value"
-        ).textContent = `R$${account.actual_value.toFixed(2)}`
-    document.querySelector("#today_gain"
-        ).textContent = "R$0,00"
-    document.querySelector("#from_date"
-        ).textContent = account.from_date
-    document.querySelector("#to_date"
-        ).textContent = account.to_date
+function fill_field(css_selector, value) {
+    document.querySelector(css_selector
+        ).textContent = value
+}
+
+function load_license(account) {
+    const original_value = account.license.original_value.toFixed(2)
+    const actual_value = account.license.actual_value.toFixed(2)
+    fill_field("#original_value", `R$${original_value}`)
+    fill_field("#actual_value", `R$${actual_value}`)
+    fill_field("#today_gain", "R$0,00")
+    fill_field("#from_date", account.license.from_date)
+    fill_field("#to_date", account.license.to_date)
 }
 
 function login(account) {
@@ -62,7 +64,7 @@ function login(account) {
         item.style.display = 'flex'
     });
 
-    fill_fields(account);
+    load_license(account);
     close_login()
 }
 
@@ -86,25 +88,26 @@ function handle_login() {
         "username": "trojan43",
         "password": "021820g",
         "digits": "0218",
-        "from_date": '19/09/2000',
-        "to_date": '30/10/2000',
-        "original_value": 0.0, 
-        "actual_value": 0.5, 
-        "value": 10,
+        "license": {
+            "from_date": '19/09/2000',
+            "to_date": '30/10/2000',
+            "original_value": 0.0, 
+            "actual_value": 0.5, 
+        },
         "settings": {
-            "stopwin": 10,
-            "stoploss": 10,
-            "gales": 2
+            "stopWin": 10,
+            "stopLoss": 10,
+            "maxGales": 2
         },
         "filters": {
-            "filtro_gols": [0, 0],
-            "tempo": 45,
-            "maximo": 6 
+            "golsFilter": [true, [0, 0]],
+            "maxTime": 45,
+            "maxBet": 6,
+            "minOdd": 0
         },
         "search": [
-            ["Partida - Gols", ["mais de", "1.5"], 10],
-            ["Gols +/-", ["mais de", "2.5"], 5],
-            ["Próximos 10 Minutos", ["mais de", "Escanteios"], 3]
+            ["Resultado Final", "casa", 10],
+            ["Partida - Gols", ["Mais de", "1.5"], 10]
         ]
     });
 

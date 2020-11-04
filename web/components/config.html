@@ -6,42 +6,42 @@
                 <h3> Stop Win </h3>
                 <p> Valor máximo de ganho por dia </p>
             </div>
-            <input type="text" placeholder="R$0,00" oninput = "moneyFormatter(this)">
+            <input id = "stopWin" type="text" placeholder="R$0,00" oninput = "moneyFormatter(this)">
         </li>
         <li>
             <div>
                 <h3> Stop Loss </h3>
                 <p> Valor máximo de perda por dia </p>
             </div>
-            <input type="text" placeholder="R$0,00" oninput = "moneyFormatter(this)">
+            <input id = "stopLoss" type="text" placeholder="R$0,00" oninput = "moneyFormatter(this)">
         </li>
         <li>
             <div>
                 <h3> Máximo de Gales </h3>
                 <p> Se perder, máximo de vezes que irá aumentar a aposta </p>
             </div>
-            <input type="text" placeholder="Ex: 2" oninput = "intFormatter(this)">
+            <input id = "maxGales" type="text" placeholder="Ex: 2" oninput = "intFormatter(this)">
         </li>
         <li>
             <div>
                 <h3> Máximo de operações </h3>
                 <p> Máximo de operações simultâneas </p>
             </div>
-            <input type="text" placeholder="Ex: 4" oninput = "intFormatter(this)">
+            <input id = "maxBet" type="text" placeholder="Ex: 4" oninput = "intFormatter(this)">
         </li>
         <li>
             <div>
                 <h3> Máximo de tempo </h3>
                 <p> Tempo de partida mínimo para se operar </p>
             </div>
-            <input type="text" placeholder="Ex: 45" oninput = "intFormatter(this)">
+            <input id = "maxTime" type="text" placeholder="Ex: 45" oninput = "intFormatter(this)">
         </li>
         <li>
             <div>
                 <h3> Odd mínimo </h3>
                 <p> Valor multiplicativo mínimo para uma aposta </p>
             </div>
-            <input type="text" placeholder="Ex: 1.5" oninput = "floatFormatter(this)">
+            <input id = "minOdd" type="text" placeholder="Ex: 1.5" oninput = "floatFormatter(this)">
         </li>
         <li class = "gols">
             <div>
@@ -49,15 +49,39 @@
                 <p> Quantos gols são necessários para se operar </p>
             </div>
             <div>
-                <h3 for="gol-filter"> Ativar filtro </h3>
-                <input type="checkbox" name="gol-filter" id="gol-filter">
+                <h3 for="golsFilter"> Ativar filtro </h3>
+                <input type="checkbox" name="golsFilter" id="golsFilter">
             </div>
             <div class = "between">
-                <input type="text" placeholder="Casa" oninput = "intFormatter(this)">
+                <input id = "golsFilter1" type="text" placeholder="Casa" oninput = "intFormatter(this)">
                 X
-                <input type="text" placeholder="Visitante" oninput = "intFormatter(this)">
+                <input id = "golsFilter2" type="text" placeholder="Visitante" oninput = "intFormatter(this)">
             </div>
         </li>
     </ul>
 
 </section>
+
+<script>
+    function change_input_value(id, value) {
+        document.getElementById(id).value = value;
+    }
+    function load_config() { 
+        const account = JSON.parse(localStorage.getItem('account'));
+
+        change_input_value("stopWin", account.settings.stopWin);
+        change_input_value("stopLoss", account.settings.stopLoss);
+        change_input_value("maxGales", account.settings.maxGales);
+        
+        change_input_value("golsFilter1", account.filters.golsFilter[1][0]);
+        change_input_value("golsFilter2", account.filters.golsFilter[1][1]);
+        change_input_value("maxTime", account.filters.maxTime);
+        change_input_value("maxBet", account.filters.maxBet);   
+        change_input_value("minOdd", account.filters.minOdd);   
+
+        document.getElementById("golsFilter"
+            ).checked = account.filters.golsFilter[0]
+    }
+
+    load_config();
+</script>
