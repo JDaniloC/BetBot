@@ -55,7 +55,16 @@
             const td = document.createElement('td');
             const input = document.createElement('input');
             input.onchange = handle_change;
-            input.addEventListener('input', function() { element.onInput(input) })
+            input.addEventListener('input', function() {
+                element.onInput(input) })
+            input.addEventListener('focusout', function(input) {
+                const valor = input.target.value;
+                if (valor.replaceAll("+", "").replaceAll("-", "") === "") {
+                    removeBet(element.name);
+                } else {
+                    addBet(element.name, `${title} ${valor}`);
+                }
+            })
             input.placeholder = element.placeholder;
             input.setAttribute("id", element.name + '|' + title);
             input.setAttribute("maxlength", element.max + 1);

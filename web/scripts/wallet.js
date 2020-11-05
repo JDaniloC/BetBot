@@ -67,12 +67,24 @@ function addBet(betTitle, betInfo) {
         input.className = "bet-value";
         input.placeholder = "Valor de Aposta";
         input.addEventListener('input', function() {
-            moneyFormatter(input) 
+            moneyFormatter(input); 
             calculateAmount();
-        })
+        });
+        input.addEventListener('focusout', function(event) {
+            const account = JSON.parse(localStorage.getItem('account'))
+            const valor = event.target.value;
+            account.search.forEach(bet => {
+                if (bet[0] === betTitle) {
+                    bet[2] = parseFloat(
+                        valor.replace("R$", "").replace(",", "."));
+                }
+            });
+            localStorage.setItem('account', JSON.stringify(account));
+        });
         input.oninput = "moneyFormatter(this)";
         return input;
     }
+    removeBet(betTitle);
     const bets = document.querySelector('.wallet ul');
     const newBet = document.createElement("li");
     newBet.appendChild(createCloseButton());
@@ -85,20 +97,20 @@ function addBet(betTitle, betInfo) {
     counter.textContent = parseInt(counter.textContent) + 1;
 }
 
-function removeBet(betTitle, betInfo) {
+function removeBet(betTitle) {
     const bets = document.querySelectorAll('.wallet li');
     bets.forEach(bet => {
         const [title, option] = bet.querySelectorAll("p");
-        if (title.textContent === betTitle && 
-            option.textContent === betInfo) {
+        if (title.textContent === betTitle) {
             document.querySelector(
                 '.wallet ul'
             ).removeChild(bet)
+            const counter = document.querySelector(
+                '.wallet .wallet-counter');
+            counter.textContent = parseInt(counter.textContent) - 1;
+            calculateAmount()
         }
     })
-    const counter = document.querySelector(
-        '.wallet .wallet-counter');
-    counter.textContent = parseInt(counter.textContent) - 1;
 }
 
 function calculateAmount() {

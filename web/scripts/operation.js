@@ -7,7 +7,7 @@ function handle_select(event) {
         (x) => (x[0] !== title))
 
     if (input.checked) {
-        account.search.push([title, option, 2])
+        account.search.push([title, option, 0])
         addBet(title, option);
     } else {
         removeBet(title, option);
@@ -23,9 +23,8 @@ function handle_change(event) {
     const [title, option] = input.id.split('|')
     account.search = account.search.filter(
         (x) => (x[0] !== title))
-    if (input.value !== "") {
-        account.search.push(
-            [title, [option, input.value], 2]);
+    if (input.value.replaceAll("+", "").replaceAll("-", "") !== "") {
+        account.search.push([title, [option, input.value], 0]);
     }
     
     localStorage.setItem('account', JSON.stringify(account));

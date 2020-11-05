@@ -22,5 +22,19 @@
     </div>
     <ul class="wallet-bets">
     </ul>
-    <button class="wallet-operate"> Iniciar Operação </button>
+    <button class="wallet-operate" onClick = "operate()"> 
+        Iniciar Operação 
+    </button>
 </div>
+<script>
+    function loadBets() {
+        const account = JSON.parse(localStorage.getItem('account'));
+        account.search.forEach(element => {
+            if (typeof(element[1]) !== "string") {
+                element[1] = `${element[1][0]} ${element[1][1]}`;
+            }
+            addBet(element[0], element[1]);
+        })
+    }
+    loadBets();
+</script>
