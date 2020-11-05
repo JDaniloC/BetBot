@@ -1,6 +1,6 @@
 header {
     background-color: #126e51;
-    width: 100%;
+    width: 100vw;
     position: fixed;
     height: 50px;
     z-index: 20;

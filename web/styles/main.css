@@ -10,7 +10,7 @@ body {
 }
 
 main{
-    padding: 3em 0;
+    padding: 3em 0em 0em;
     display: flex;
     flex-direction: column;
     align-items: center;

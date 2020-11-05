@@ -1,0 +1,26 @@
+<div class = "wallet">
+    <header>
+        <div class="wallet-counter"> 0 </div>
+        <div class="open-wallet" onClick = "openBets()">
+            <h2> 
+                Caderneta de Apostas 
+            </h2>
+        </div>
+        <div class="wallet-balance">
+            <p> Saldo </p>
+            <p> R$0,00 </p>
+        </div>
+        <button class="wallet-close" onClick="closeBets()">
+            <img src="images/x.svg"></img>
+        </button>
+    </header>
+    <div> 
+        <button class="wallet-remove" 
+            onClick = "clearBets()"> 
+            Remover tudo 
+        </button> 
+    </div>
+    <ul class="wallet-bets">
+    </ul>
+    <button class="wallet-operate"> Iniciar Operação </button>
+</div>

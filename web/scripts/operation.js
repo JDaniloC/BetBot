@@ -8,7 +8,10 @@ function handle_select(event) {
 
     if (input.checked) {
         account.search.push([title, option, 2])
-    } 
+        addBet(title, option);
+    } else {
+        removeBet(title, option);
+    }
     
     localStorage.setItem('account', JSON.stringify(account));
 }
@@ -26,8 +29,6 @@ function handle_change(event) {
     }
     
     localStorage.setItem('account', JSON.stringify(account));
-
-    console.log(account)
 }
 
 function operate() {

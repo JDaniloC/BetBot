@@ -1,0 +1,147 @@
+.wallet {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    max-width: 450px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 1em;
+    z-index: 99;
+}
+
+.wallet header {
+    display: flex;
+    max-width: 450px;
+    background-color: #f0f0f0;
+    align-items: center;
+    border-bottom: 1px solid #cecece;
+    height: 55px;
+    position: relative;
+}
+.wallet header .wallet-counter {
+    border-radius: 999px;
+    width: 26px;
+    height: 26px;
+    background-color: #126e51;
+    font-size: 14px;
+    color: #fff;
+    margin-left: 1em;
+    text-align: center;
+    line-height: 26px;
+    pointer-events: none;
+}
+
+.wallet .open-wallet {
+    cursor: pointer;
+    padding: 0 7em 0 0;
+}
+.wallet header h2 {
+    font-size: 16px;
+    color: #404040;
+    display: block;
+    font-weight: 400;
+    line-height: 22px;
+    white-space: nowrap;
+    margin-left: 1em;
+    margin-right: auto;
+}
+.wallet header .wallet-balance {
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+    margin-right: 1em;
+}
+.wallet header .wallet-balance p {
+    line-height: 16px;
+    font-size: 12px;
+    color: #666;
+}
+.wallet header .wallet-balance p + p{
+    line-height: 17px;
+    color: #404040;
+}
+.wallet header .wallet-close {
+    width: 55px;
+    height: 54px;
+    border: none;
+    border-left: 1px solid #cecece;
+    cursor: pointer;
+}
+
+.wallet header + div {
+    display: flex;
+    height: 44px;
+    background: #f0f0f0;
+}
+.wallet button.wallet-remove {
+    color: #126e51;
+    padding: 0 11px;
+    border: 0;
+    cursor: pointer;
+}
+.wallet button.wallet-remove:hover {
+    text-decoration: underline;
+}
+
+.wallet ul.wallet-bets {
+    background: #e4e4e4;
+    flex-direction: column;
+}
+.wallet ul.wallet-bets li {
+    display: flex;
+    padding: 0.7em 0;
+    border-top: 1px solid #cecece;
+}
+.wallet ul.wallet-bets li button.close-bet {
+    display: flex;
+    padding: 0.3em 0.6em;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+.wallet ul.wallet-bets li button.close-bet img {
+    height: 11px;
+    width: 11px;
+}
+.wallet ul.wallet-bets li .bet-information {
+    margin-right: auto;
+}
+.wallet ul.wallet-bets li .bet-information p {
+    font-size: 15px;
+    color: #404040;
+    line-height: 18px;
+    font-weight: 400;
+}
+.wallet ul.wallet-bets li .bet-information p + p {
+    font-size: 11px;
+    color: #666;
+}
+.wallet ul.wallet-bets li input.bet-value {
+    height: 35px;
+    max-width: 118px;
+    padding: 8px 10px;
+    text-align: right;
+    border: none;
+    cursor: text;
+    color: #757575;
+    background-color: #f8f8f8;
+}
+
+.wallet button.wallet-operate {
+    align-items: center;
+    justify-content: center;
+
+    padding: 11px;
+    min-height: 48px;
+    border: none;
+    cursor: pointer;
+    background-color: #58d7af;
+
+    font-size: 17px;
+    color: #333;
+    line-height: 20px;
+}
+.wallet button.wallet-operate:hover {
+    background-color: #99e6cd;
+}

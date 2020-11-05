@@ -1,7 +1,7 @@
 section.operation {
     display: flex;
     align-items: center;
-    padding: 1em 2em;
+    padding: 1em 2em 5em;
     flex-wrap: wrap;
     justify-content: space-between;
     color: #e4e4e4;

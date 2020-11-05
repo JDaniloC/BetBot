@@ -4,6 +4,7 @@ section.welcome {
     align-items: center;
     justify-self: center;
     
+    width: 100vw;
     padding: 0 2em;
     font-size: x-large;
     text-align: center;
@@ -38,4 +39,8 @@ section.welcome .gray {
     width: 100vw;
     padding: 3em 4em;
     background-color: #f5f5f5;
+}
+
+section.welcome:last-child {
+    padding-bottom: 3em;
 }
