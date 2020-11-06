@@ -1,9 +1,6 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from widgets import *
 
-email = "testlearnbet"
-senha = "1231231414"
-
 class BetBot:
     def __init__(self, config):
         self.config = config
@@ -16,10 +13,11 @@ class BetBot:
         esperar_sumir(self.wait, ".bl-Preloader_MainHeader")
 
         # Login
-        login(self.wait, email, senha)
+        login(self.wait, config["username"], config["password"])
         tirar_notificacoes(self.browser, self.wait)
 
         self.banca_inicial = banca(self.fast)
+        self.minOdd = self.config["filters"]["minOdd"]
         self.golsFilter = (self.config["filters"]['golsFilter'][1] 
             if self.config["filters"]['golsFilter'][0] else False)
         self.maxBet = self.config["settings"]['maxBet']
@@ -49,7 +47,9 @@ class BetBot:
                     continue
                 
                 try: jogo.click()
-                except: jogo.click()
+                except: 
+                    rolar_pagina(self.browser, 300)
+                    jogo.click()
                 
                 try: abrir_opcoes(self.fast)
                 except: 
@@ -63,10 +63,11 @@ class BetBot:
                     opcao = procura_opcao(self.fast, title)
                     if not opcao:
                         continue
-                    if procura_aposta(opcao, column):
+                    if procura_aposta(opcao, column, self.minOdd):
                         adicionar_valor(self.wait, self.fast, valor)
                         num_apostas += 1
                         if num_apostas > self.maxBet:
                             break
+                    time.sleep(7)
                 self.browser.back()
         print("Fim da procura")

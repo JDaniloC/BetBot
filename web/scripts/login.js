@@ -102,8 +102,8 @@ function handle_login() {
         },
         "filters": {
             "golsFilter": [true, [0, 0]],
-            "maxTime": 45,
-            "minOdd": 0
+            "maxTime": 90,
+            "minOdd": 1.5
         },
         "search": [
             ["Resultado Final", "casa", 10],

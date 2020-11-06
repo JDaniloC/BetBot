@@ -33,8 +33,10 @@
             if (typeof(element[1]) !== "string") {
                 element[1] = `${element[1][0]} ${element[1][1]}`;
             }
-            addBet(element[0], element[1]);
+            var input = addBet(element[0], element[1]);
+            input.value = `R$${element[2]}`
         })
+        calculateAmount();
     }
     loadBets();
 </script>

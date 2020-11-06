@@ -27,6 +27,9 @@ function clearBets() {
     document.querySelector(
         '.wallet .wallet-balance p + p'
     ).textContent = "R$0,00"
+    document.querySelector(
+        '.wallet .wallet-counter'
+    ).textContent = 0;
 
     const account = JSON.parse(
         localStorage.getItem('account'));
@@ -46,6 +49,10 @@ function addBet(betTitle, betInfo) {
         const closeImg = document.createElement("img");
         closeBet.className = "close-bet";
         closeImg.src = "images/x.svg";
+        closeBet.addEventListener('click', function() {
+            removeBet(betTitle); 
+            removeFromSearch(betTitle);
+        });
         closeBet.appendChild(closeImg)
         return closeBet;    
     }
@@ -89,12 +96,14 @@ function addBet(betTitle, betInfo) {
     const newBet = document.createElement("li");
     newBet.appendChild(createCloseButton());
     newBet.appendChild(createInfos());
-    newBet.appendChild(createInput());
+    const input = createInput()
+    newBet.appendChild(input);
     bets.appendChild(newBet);
 
     const counter = document.querySelector(
         '.wallet .wallet-counter');
     counter.textContent = parseInt(counter.textContent) + 1;
+    return input;
 }
 
 function removeBet(betTitle) {

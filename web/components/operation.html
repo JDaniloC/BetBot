@@ -10,7 +10,7 @@
         input.setAttribute("name", id.split("|")[0]);
         input.setAttribute("id", id);
         input.setAttribute("type", "checkbox");
-        input.onclick = handle_select;
+        input.onclick = handleSelect;
         span.textContent = text;
 
         label.appendChild(input);
@@ -54,7 +54,7 @@
             
             const td = document.createElement('td');
             const input = document.createElement('input');
-            input.onchange = handle_change;
+            input.onchange = handleChange;
             input.addEventListener('input', function() {
                 element.onInput(input) })
             input.addEventListener('focusout', function(input) {
@@ -154,7 +154,7 @@
                 onInput: floatFormatter, placeholder: "Ex: 2.5" },
             { 
                 name: 'Total de Gols - X° Tempo', titles: maisMenos, 
-                max: 2, onInput: intFormatter, placeholder: 'Ex: 2' },
+                max: 2, onInput: floatFormatter, placeholder: 'Ex: 0.5' },
             { 
                 name: '1° Parte - Handicap Asiático (X-X)', titles: ['casa', 'fora'], 
                 max: 9, onInput: handicapFormatter, placeholder: "Ex: 0.0,-0.5" },

@@ -3,7 +3,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
-import time
+import time, re
 
 # Classes
 
@@ -33,6 +33,8 @@ class Browser(Chrome):
         })
 
 # Abstrações
+def rolar_pagina(browser, valor):
+    browser.execute_script(f"window.scroll(0, window.pageYOffset + {valor})")
 
 def login(wait: WebDriverWait, email: str, password: str):
     apertar_botao(wait, ".hm-MainHeaderRHSLoggedOutWide_Login ")
@@ -45,7 +47,8 @@ def tirar_notificacoes(browser: Chrome, wait: WebDriverWait):
         browser.switch_to.frame(encontra_elementos(wait, ".lp-UserNotificationsPopup_Frame ")[0])
         apertar_botao(wait, "#remindLater")
         for i in range(2):
-            try: apertar_botao(wait, ".pm-PushTargetedMessageOverlay_CloseButton ")
+            try: apertar_botao(wait, 
+                ".pm-PushTargetedMessageOverlay_CloseButton ")
             except: pass
     except: pass
 
@@ -60,7 +63,7 @@ def filtra_tempo(jogo: WebElement, maximo: int) -> bool:
         )[0].text
     except: return False
 
-    print("Tempo:", hora_min)
+    # print("Tempo:", hora_min)
     tempo = int(hora_min.split(":")[0])
     if tempo > maximo:
         print("Passou do tempo requisitado:", maximo)
@@ -75,19 +78,23 @@ def abrir_opcoes(wait: WebDriverWait):
         except: pass
 
 def procura_opcao(wait: WebDriverWait, nome: str) -> WebElement or bool:
+    nome = re.escape(nome).replace("X", "\d").lower()
     opcoes = encontra_elementos(wait, '.sip-MarketGroup ')
     for opcao in opcoes:
         titulo = encontra_filhos(opcao, '.sip-MarketGroupButton ')[0]
-        if nome.lower() in titulo.text.lower():
+        if re.match(nome, titulo.text.lower()):
+            print("Encontrou a opção:", nome, titulo.text)
             return opcao
     return False
 
-def selecionar_info_tabela(opcao: WebElement, info: str, medida: float) -> WebElement:
+def selecionar_info_tabela(opcao: WebElement, info: str, 
+    medida: float, minOdd: float) -> WebElement or bool:
     local = -1
     for index, linha in enumerate(
         encontra_filhos(opcao, ".srb-ParticipantLabelCentered ")):
         linha = linha.text.lower().strip()
-        if medida.lower() == linha.strip().lower():
+        if medida.lower() == linha:
+            # print("Linha encontrada:", medida, linha)
             local = index
     if local == -1: return False
 
@@ -95,31 +102,42 @@ def selecionar_info_tabela(opcao: WebElement, info: str, medida: float) -> WebEl
     for index, coluna in enumerate(
         encontra_filhos(opcao, '.gl-MarketColumnHeader ')):
         if index != 0 and info.lower() in coluna.text.lower():
+            print("Coluna encontrada:", info, coluna.text)
             indice = index
 
-    return encontra_filhos(
-        encontra_filhos(opcao, ".gl-Market ")[indice],
-        ".gl-ParticipantOddsOnly")[local]
-
-def seleciona_info_botoes(opcao: WebElement, info: str) -> WebElement or bool:
-    for coluna in encontra_filhos(opcao, ".gl-Participant_General "):
-        if info == coluna.text.split("\n")[0]:
-            return coluna
+    botao =  encontra_filhos(encontra_filhos(
+        opcao, ".gl-Market ")[indice], ".gl-ParticipantOddsOnly")[local]
+    if float(botao.text) > minOdd:
+        return botao
+    print(f"Odd inferior ao requerido: {float(botao.text)} < {minOdd}")
     return False
 
-def procura_aposta(opcao: WebElement, info: str or tuple) -> bool:
-    if type(info) == tuple:
+def seleciona_info_botoes(
+    opcao: WebElement, info: str, minOdd: float) -> WebElement or bool:
+    for coluna in encontra_filhos(opcao, ".gl-Participant_General "):
+        informacao, odd = coluna.text.split("\n")
+        if info == informacao:
+            if float(odd) > minOdd: return coluna
+            else:
+                print(f"Odd inferior ao requerido: {odd} < {minOdd}")
+                break
+    return False
+
+def procura_aposta(
+    opcao: WebElement, info: str or tuple, minOdd: float) -> bool:
+    if type(info) == list:
         coluna, medida = info
-        botao = selecionar_info_tabela(opcao, coluna, medida)
+        botao = selecionar_info_tabela(opcao, coluna, medida, minOdd)
     else:
-        botao = seleciona_info_botoes(opcao, info)
+        botao = seleciona_info_botoes(opcao, info, minOdd)
     
     if botao: 
         botao.click()
         return True
     return False
 
-def adicionar_valor(wait: WebDriverWait, fast: WebDriverWait, valor: float) -> bool:
+def adicionar_valor(
+    wait: WebDriverWait, fast: WebDriverWait, valor: float) -> bool:
     atribuiu = False
     try:
         time.sleep(2)
@@ -178,7 +196,7 @@ def numero_gols(jogo: WebElement) -> list:
     lista_gols = encontra_filhos(jogo,
         ".him-StandardScores_Scores "
     )[0].text.split("\n")
-    print("Gols:", " x ".join(lista_gols))
+    # print("Gols:", " x ".join(lista_gols))
     return list(map(int, lista_gols))
 
 def numero_escanteios(wait: WebDriverWait) -> int:
