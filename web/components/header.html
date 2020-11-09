@@ -87,9 +87,7 @@
 </div>
 
 <script>
-    function loaded() {
-        if (localStorage.getItem('account')) {
-            login(JSON.parse(localStorage.getItem('account')))
-        }
+    if (localStorage.getItem('account')) {
+        login(JSON.parse(localStorage.getItem('account')))
     }
 </script>

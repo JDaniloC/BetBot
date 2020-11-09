@@ -34,7 +34,6 @@
 
 .wallet .open-wallet {
     cursor: pointer;
-    padding: 0 7em 0 0;
 }
 .wallet header h2 {
     font-size: 16px;
@@ -51,6 +50,7 @@
     flex-direction: column;
     text-align: end;
     margin-right: 1em;
+    margin-left: auto;
 }
 .wallet header .wallet-balance p {
     line-height: 16px;

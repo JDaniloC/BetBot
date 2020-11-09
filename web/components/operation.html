@@ -97,6 +97,7 @@
             { name: 'Mais Escanteios', chooses: ['casa', 'Empate', 'fora'] },
             { name: 'Último Time a Marcar', chooses: ['casa', 'Sem Gols', 'fora'] },
             { name: 'Gols Ímpar/Par', chooses: ['Ímpar', 'Par'] },
+            { name: '1° Tempo - Para Ambos os Times Marcarem', chooses: ['Sim', 'Não'] },
             { name: 'Para Ambos os Times Marcarem', chooses: ['Sim', 'Não'] },
             { 
                 name: '2° Tempo - Para Ambos os Times Marcarem', 
@@ -147,6 +148,9 @@
                 name: 'Handicap - 3 Opções', titles: ['casa', 'Empate', 'fora'], 
                 max: 2, onInput: handicapFormatter, placeholder: "Ex: +3" },
             { 
+                name: '1° Tempo - Handicap', titles: ['casa', 'Empate', 'fora'], 
+                max: 2, onInput: handicapFormatter, placeholder: "Ex: +2" },
+            { 
                 name: 'casa - Golos', titles: maisMenos, max: 3, 
                 onInput: floatFormatter, placeholder: "Ex: 1.5" },
             { 
@@ -181,17 +185,24 @@
     }
 
     function load_searches() { 
+        function regexExp(string) {
+            const palavra =  string.replaceAll(
+                /[.*+?^${}()|[\]\\ ]/g, '\\$&')
+                .replace(/\d°/g, "\\3$&"); 
+            console.log(palavra);
+            return palavra
+        }
         const account = JSON.parse(localStorage.getItem('account'));
         
         account.search.forEach(element => {
             var betName = element[0];
             if (typeof(element[1]) == "string") {
                 document.querySelector(
-                    `#${betName}\\|${element[1]}`.replaceAll(" ", "\\ ")
+                    regexExp(`#${betName}|${element[1]}`)
                 ).checked = true;
             } else {
                 document.querySelector(
-                `#${betName}\\|${element[1][0]}`.replaceAll(" ", "\\ ")
+                    regexExp(`#${betName}|${element[1][0]}`)
                 ).value = element[1][1];
             }
         })
@@ -199,4 +210,7 @@
 
     generateOptions();
     load_searches();
+    $(function(){
+        $("body > div").load("components/wallet.html"); 
+    });
 </script>

@@ -1,6 +1,4 @@
-$(function(){
-    $("main").load("components/welcome.html"); 
-});
+welcome();
 
 function shakeInputs() {
     const shakeAnimation = [
@@ -82,36 +80,6 @@ function handle_login() {
     }
     username.value = '';
     password.value = '';
-
-    login({
-        "email": "gabrieltradermm007@gmail.com",
-        "username": "trojan43",
-        "password": "021820g",
-        "digits": "0218",
-        "license": {
-            "from_date": '19/09/2000',
-            "to_date": '30/10/2000',
-            "original_value": 0.0, 
-            "actual_value": 0.5, 
-        },
-        "settings": {
-            "stopWin": 10,
-            "stopLoss": 10,
-            "maxBet": 6,
-            "maxGales": 2
-        },
-        "filters": {
-            "golsFilter": [true, [0, 0]],
-            "maxTime": 90,
-            "minOdd": 1.5
-        },
-        "search": [
-            ["Resultado Final", "casa", 10],
-            ["Partida - Gols", ["Mais de", "1.5"], 10]
-        ]
-    });
-
-    return
 
     eel.handle_login(account)((result) => {
         if (!result) {

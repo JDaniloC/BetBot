@@ -44,6 +44,7 @@ class BetBot:
             
             if filtra_tempo(jogo, self.config["filters"]['maxTime']):
                 if self.golsFilter and self.golsFilter != numero_gols(jogo):
+                    print("Pulando por número de Gols")
                     continue
                 
                 try: jogo.click()
@@ -70,4 +71,6 @@ class BetBot:
                             break
                     time.sleep(7)
                 self.browser.back()
+        else: 
+            print(len(jogos), num_apostas, self.maxBet)
         print("Fim da procura")

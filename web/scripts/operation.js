@@ -1,6 +1,6 @@
 function handleSelect(event) {
     const input = event.target;
-    const [title, option] = input.id.split('|')
+    const [title, option] = input.id.split('|');
     const account = removeFromSearch(title);
 
     if (input.checked) {
@@ -15,7 +15,7 @@ function handleSelect(event) {
 
 function handleChange(event) {
     const input = event.target;
-    const [title, option] = input.id.split('|')
+    const [title, option] = input.id.split('|');
     const account = removeFromSearch(title);
 
     if (input.value.replaceAll("+", "").replaceAll("-", "") !== "") {
@@ -26,7 +26,7 @@ function handleChange(event) {
 }
 
 function removeFromSearch(title) {
-    const account = JSON.parse(localStorage.getItem('account'))
+    const account = JSON.parse(localStorage.getItem('account'));
     account.search = account.search.filter(
         (x) => (x[0] !== title))
     localStorage.setItem('account', JSON.stringify(account));

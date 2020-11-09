@@ -6,7 +6,8 @@
                 <h3> Stop Win </h3>
                 <p> Valor máximo de ganho por dia </p>
             </div>
-            <input id = "stopWin" type="text" placeholder="R$0,00" oninput = "moneyFormatter(this)">
+            <input id = "stopWin" type="text" placeholder="R$0,00" 
+                oninput = "moneyFormatter(this)">
         </li>
         <li>
             <div>
@@ -63,25 +64,52 @@
 </section>
 
 <script>
-    function change_input_value(id, value) {
+    function changeInputValue(id, value) {
         document.getElementById(id).value = value;
     }
     function load_config() { 
         const account = JSON.parse(localStorage.getItem('account'));
 
-        change_input_value("stopWin", account.settings.stopWin);
-        change_input_value("stopLoss", account.settings.stopLoss);
-        change_input_value("maxGales", account.settings.maxGales);
-        change_input_value("maxBet", account.settings.maxBet);   
+        changeInputValue("stopWin", account.settings.stopWin);
+        changeInputValue("stopLoss", account.settings.stopLoss);
+        changeInputValue("maxGales", account.settings.maxGales);
+        changeInputValue("maxBet", account.settings.maxBet);   
         
-        change_input_value("golsFilter1", account.filters.golsFilter[1][0]);
-        change_input_value("golsFilter2", account.filters.golsFilter[1][1]);
-        change_input_value("maxTime", account.filters.maxTime);
-        change_input_value("minOdd", account.filters.minOdd);   
+        changeInputValue("golsFilter", account.filters.golsFilter[0]);
+        changeInputValue("golsFilter1", account.filters.golsFilter[1][0]);
+        changeInputValue("golsFilter2", account.filters.golsFilter[1][1]);
+        changeInputValue("maxTime", account.filters.maxTime);
+        changeInputValue("minOdd", account.filters.minOdd);   
 
         document.getElementById("golsFilter"
             ).checked = account.filters.golsFilter[0]
     }
+
+    const inputs = document.querySelectorAll(".config input");
+    inputs.forEach(input => {
+        input.addEventListener('focusout', function(input) {
+            const account = JSON.parse(localStorage.getItem('account'));
+            const valor = input.target.value;
+            const id = input.target.id;''
+            if (["golsFilter", "golsFilter1", "golsFilter2"].includes(id)) {
+                switch (id) {
+                    case "golsFilter1":
+                        account.filters.golsFilter[1][0] = parseInt(valor);
+                        break;
+                    case "golsFilter2":
+                        account.filters.golsFilter[1][1] = parseInt(valor);
+                        break
+                    default:
+                        account.filters.golsFilter[0] = valor === "true";
+                }
+            } else if (["maxTime", "minOdd"].includes(id)) {
+                account.filters[id] = parseFloat(valor);
+            } else {
+                account.settings[id] = parseFloat(valor.replace("R$", ""));
+            }
+            localStorage.setItem("account", JSON.stringify(account));
+        })
+    })
 
     load_config();
 </script>
