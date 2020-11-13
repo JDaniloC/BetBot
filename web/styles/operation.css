@@ -29,27 +29,28 @@ section.operation div > div, section.operation div > table {
     width: 100%;
 }
 
-section.operation div.options-container {
+section.operation .options-container {
     display: flex;
+    flex-wrap: wrap;
 }
 
-section.operation div.options-container label {
+section.operation .options-container label {
     cursor: pointer;
-    flex: 1;
+    flex: 1 1 30%;
 }
 
-section.operation div.options-container input:checked + span {
+section.operation .options-container input:checked + span {
     color: #126e51;
     background-color: #e4e4e4;
 }
 
-section.operation div.options-container label span {
+section.operation .options-container label span {
     display: block;
     text-align: center;
     padding: 1em;
 }
 
-section.operation div.options-container label:hover span{
+section.operation .options-container label:hover span{
     background-color: #cecece;
     color: #545454;
 }
@@ -72,7 +73,7 @@ section.operation table input {
     width: 100%;
 }
 
-div.options-container label input {
+.options-container label input {
     display: none;
 }
 

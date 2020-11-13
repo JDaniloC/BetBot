@@ -19,30 +19,6 @@ function closeBets() {
     })
 }
 
-function clearBets() {
-    const bets = document.querySelectorAll('.wallet li');
-    bets.forEach(element => {
-        element.style.display = "none";
-    })
-    document.querySelector(
-        '.wallet .wallet-balance p + p'
-    ).textContent = "R$0,00"
-    document.querySelector(
-        '.wallet .wallet-counter'
-    ).textContent = 0;
-
-    const account = JSON.parse(
-        localStorage.getItem('account'));
-    account.search = [];
-    localStorage.setItem('account', JSON.stringify(account));
-
-    document.querySelectorAll('.operation input').forEach(
-        element => {
-            element.checked = false;
-            element.value = '';
-    })
-}
-
 function addBet(betTitle, betInfo) {
     function createCloseButton() {
         const closeBet = document.createElement("button");
@@ -119,6 +95,32 @@ function removeBet(betTitle) {
             counter.textContent = parseInt(counter.textContent) - 1;
             calculateAmount()
         }
+    })
+}
+
+function clearBets() {
+    const bets = document.querySelectorAll('.wallet li');
+    bets.forEach(element => {
+        document.querySelector(
+            '.wallet ul'
+        ).removeChild(element)
+    })
+    document.querySelector(
+        '.wallet .wallet-balance p + p'
+    ).textContent = "R$0,00"
+    document.querySelector(
+        '.wallet .wallet-counter'
+    ).textContent = 0;
+
+    const account = JSON.parse(
+        localStorage.getItem('account'));
+    account.search = [];
+    localStorage.setItem('account', JSON.stringify(account));
+
+    document.querySelectorAll('.operation input').forEach(
+        element => {
+            element.checked = false;
+            element.value = '';
     })
 }
 

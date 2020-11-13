@@ -72,3 +72,13 @@ function golsFormatter(input) {
     }
     input.value = number
 }
+
+function timeFormatter(input) {
+    var number = input.value.replace(/[^\d:]/g, '')
+    number = number.replace(/(\d{2})(\d{2})/g, '$1:$2')
+    
+    if (input.maxLength !== -1 && input.maxLength == number.length) {
+        number = number.slice(0, input.maxLength - 1)
+    }
+    input.value = number
+}

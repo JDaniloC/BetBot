@@ -4,7 +4,12 @@ function handleSelect(event) {
     const account = removeFromSearch(title);
 
     if (input.checked) {
-        account.search.push([title, option, 0])
+        input.parentElement.parentElement.querySelectorAll("input"
+        ).forEach(item => {
+            item.checked = false;
+        })
+        input.checked = true;
+        account.search.push([title, option, 0.5])
         addBet(title, option);
     } else {
         removeBet(title, option);
@@ -19,9 +24,26 @@ function handleChange(event) {
     const account = removeFromSearch(title);
 
     if (input.value.replaceAll("+", "").replaceAll("-", "") !== "") {
-        account.search.push([title, [option, input.value], 0]);
+        account.search.push([title, [option, input.value], 0.5]);
     }
     
+    localStorage.setItem('account', JSON.stringify(account));
+}
+
+function handleSelecTable(input) {
+    const [title, option] = input.id.split('|');
+    const account = removeFromSearch(title);
+
+    if (input.checked) {
+        input.parentElement.parentElement.parentElement.querySelectorAll("input").forEach(item => {
+            item.checked = false;
+        })
+        input.checked = true;
+        account.search.push([title, [option, input.name, "true"], 0.5]);
+        addBet(title, `${option} ${input.name}`)
+    } else {
+        removeBet(title);
+    }
     localStorage.setItem('account', JSON.stringify(account));
 }
 

@@ -1,6 +1,6 @@
+import eel, json, time, threading
 from datetime import datetime
 from bot import BetBot
-import eel, json, time
 
 @eel.expose
 def handle_login(account):
@@ -23,7 +23,9 @@ def handle_login(account):
 
 @eel.expose
 def operate(account):
-    BetBot(account)
+    bot = BetBot(account)
+    threading.Thread(target=bot.start,
+        daemon = True).start()
 
 eel.init('web')
 eel.start('index.html')

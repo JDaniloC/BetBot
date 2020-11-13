@@ -100,7 +100,7 @@
                         account.filters.golsFilter[1][1] = parseInt(valor);
                         break
                     default:
-                        account.filters.golsFilter[0] = valor === "true";
+                        account.filters.golsFilter[0] = input.target.checked;
                 }
             } else if (["maxTime", "minOdd"].includes(id)) {
                 account.filters[id] = parseFloat(valor);
