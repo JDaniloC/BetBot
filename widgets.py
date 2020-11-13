@@ -77,7 +77,8 @@ def tirar_aposta(wait: WebDriverWait):
     except: return
     for aposta in reversed(apostas):
         if encontra_filhos(aposta, ".bss-StakeBox_StakeValue-empty ") != []:
-            encontra_filhos(aposta, ".bss-NormalBetItem_Remove")[0].click()
+            try: encontra_filhos(aposta, ".bss-NormalBetItem_Remove")[0].click()
+            except: pass
     apertar_botao(wait, ".bss-DefaultContent_Close ")   
 
 def abrir_opcoes(wait: WebDriverWait):
@@ -95,23 +96,26 @@ def abrir_opcoes(wait: WebDriverWait):
                 tentativas += 1
                 break
 
-def selecionar_info_tabela(opcao: WebElement, info: str, medida: float, 
+def selecionar_info_tabela(opcao: WebElement, info: str, medida: str, 
     minOdd: float, predefined:bool = False) -> WebElement or bool:
-    columnName = ".srb-ParticipantLabelCentered " if not predefined else ".srb-ParticipantLabel_Name "
+    rowName = ".srb-ParticipantLabelCentered " if not predefined else ".srb-ParticipantLabel_Name "
     row = -1
     for index, linha in enumerate(
-        encontra_filhos(opcao, columnName)):
+        encontra_filhos(opcao, rowName)):
         linha = linha.text.lower().strip()
+        print(medida.lower(), linha)
         if medida.lower() == linha:
-            # print("Linha encontrada:", medida, linha)
             row = index
+            break
     if row == -1: return False
 
     column = 0
     for index, coluna in enumerate(
         encontra_filhos(opcao, '.gl-MarketColumnHeader ')):
+        print(info.lower(), coluna.text.lower())
         if index != 0 and info.lower() in coluna.text.lower():
             column = index
+            break
 
     botao =  encontra_filhos(encontra_filhos(
         opcao, ".gl-Market ")[column], ".gl-ParticipantOddsOnly")[row]
@@ -154,8 +158,8 @@ def procura_opcao(wait: WebDriverWait, nome: str) -> WebElement or bool:
     for opcao in opcoes:
         titulo = encontra_filhos(opcao, '.sip-MarketGroupButton ')[0]
         if re.match(nome, titulo.text.lower()):
+            print("\n", titulo.text.lower())
             return opcao
-    print()
     return False
 
 def adicionar_valor(
@@ -180,15 +184,12 @@ def adicionar_valor(
 def atribuir_valor(wait: WebDriverWait, title:str, valor: float) -> bool:
     jogadas = encontra_elementos(wait, 
         ".bss-NormalBetItem_ContentWrapper ")
-    print(jogadas)
     title = re.escape(title).replace("X", "\d").lower()
     for jogada in reversed(jogadas):
-        print(jogada.text.lower())
-        if re.match(title, jogada.text.lower()):
-            print("Atribuindo valor")
+        if re.search(title, jogada.text.lower().strip()):
             encontra_filhos(jogada, 
                 ".bss-StakeBox_StakeValueInput"
-            )[0].send_keys(valor)
+            )[0].send_keys(str(valor))
             return True
     return False
 

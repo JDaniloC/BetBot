@@ -54,6 +54,15 @@ class BetBot:
             else: column = replaces(column)
             return column
 
+        def tradutor(title, opcao):
+            if re.match("Hora do Xº Gol", title):
+                title = "Momento do Próximo Gol"
+            elif re.match("Resultado do Jogo", title):
+                title = "Minutos - Resultado"
+            elif re.match("Próximos 10 Minutos", title):
+                title = f"10 Minutos - Escanteios" if opcao == "Escanteios" else "Gols em Dez Minutos"
+            return title
+
         jogos = [0]
         i = 0
         selecionadas = 0
@@ -88,6 +97,7 @@ class BetBot:
                     if not opcao:
                         continue
                     if procura_aposta(opcao, column, self.minOdd):
+                        title = tradutor(title, column[0])
                         adicionar_valor(self.wait, self.fast, title, valor)
                         tirar_aposta(self.fast)
                         selecionadas += 1
