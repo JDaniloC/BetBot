@@ -27,8 +27,11 @@
         h3.textContent = element.name;
 
         element.chooses.forEach(choice => {
-            divContainer.appendChild(createLabel(
-                element.name + '|' + choice, choice));
+            const label = createLabel(
+                element.name + '|' + choice, choice);
+            const input = label.children[0];
+            input.setAttribute("searchtype", "options")
+            divContainer.appendChild(label);
         })
 
         div.appendChild(h3);
@@ -53,6 +56,13 @@
             
             const td = document.createElement('td');
             const input = document.createElement('input');
+
+            if (element.onInput === golsFormatter | element.onInput === handicapFormatter) {
+                input.setAttribute('searchtype', "table2")
+            } else {
+                input.setAttribute('searchtype', "table1")
+            }
+
             input.onchange = handleChange;
             input.addEventListener('input', function() {
                 element.onInput(input) })
@@ -97,8 +107,11 @@
             td.style.display = "table-cell";
             td.className = "options-container"
             element.titles.forEach(title => {
-                const label = createLabel(`${element.name}|${row}`, title)
+                const label = createLabel(
+                    `${element.name}|${row}`, title)
                 const input = label.children[0];
+
+                input.setAttribute("searchtype", "table3")
                 input.setAttribute("name", title);
                 input.removeEventListener('click', handleSelect);
                 input.addEventListener('click', () => {
@@ -119,10 +132,8 @@
     function generateOptions() {
         const opcionais = [
             { name: 'Resultado Final', chooses: ["casa", "Empate", "fora"] },
-            { 
-                name: 'Dupla Hipótese', 
-                chooses: 
-                    ["casa ou Empate", "Empate ou fora", "casa ou fora"] },
+            { name: 'Dupla Hipótese', 
+              chooses: ["casa ou Empate", "Empate ou fora", "casa ou fora"] },
             { name: 'Para se Classificar', chooses: ["casa", "fora"]}, 
             { name: 'Intervalo - Resultado', chooses: ["casa", "Empate", "fora"] },
             { name: 'Xº Gol', chooses: ["casa", "Sem Xº gol", "fora"] },
@@ -135,9 +146,7 @@
             { name: 'Gols Ímpar/Par', chooses: ['Ímpar', 'Par'] },
             { name: '1° Tempo - Para Ambos os Times Marcarem', chooses: ['Sim', 'Não'] },
             { name: 'Para Ambos os Times Marcarem', chooses: ['Sim', 'Não'] },
-            { 
-                name: '2° Tempo - Para Ambos os Times Marcarem', 
-                chooses: ['Sim', 'Não'] },
+            { name: '2° Tempo - Para Ambos os Times Marcarem', chooses: ['Sim', 'Não'] },
             { name: '2° Tempo - Para Ganhar', chooses: ['casa', 'Empate', 'fora'] },
             { name: 'Intervalo / Final do Jogo', chooses: ['casa - casa', 'casa - Empate', 
                 'casa - fora', 'Empate - casa', 'Empate - Empate', 'Empate - fora', 
@@ -215,14 +224,17 @@
                 name: 'Resultado do Jogo - Tempo', titles: ["casa", "Empate", "fora"],
                 max: 5, onInput: timeFormatter, placeholder: "10:00 - 80:00"},
             { 
-                name: 'Hora do Xº Gol', titles: ["Gol antes do minuto", "Sem Gol antes do minuto"], 
-                max: 5, onInput: timeFormatter, placeholder: "10:00 - 80:00"},
+                name: 'Hora do Xº Gol', max: 5, onInput: timeFormatter,
+                titles: ["Gol antes do minuto", "Sem Gol antes do minuto"], 
+                placeholder: "10:00 - 80:00"},
             { 
-                name: 'Hora do Xº Gol - casa', titles: ["Gol antes do minuto", "Sem Gol antes do minuto"], 
-                max: 5, onInput: timeFormatter, placeholder: "10:00 - 80:00"},
+                name: 'Hora do Xº Gol - casa', max: 5, onInput: timeFormatter,
+                titles: ["Gol antes do minuto", "Sem Gol antes do minuto"], 
+                placeholder: "10:00 - 80:00"},
             { 
-                name: 'Hora do Xº Gol - fora', titles: ["Gol antes do minuto", "Sem Gol antes do minuto"], 
-                max: 5, onInput: timeFormatter, placeholder: "10:00 - 80:00"},
+                name: 'Hora do Xº Gol - fora', max: 5, onInput: timeFormatter,
+                titles: ["Gol antes do minuto", "Sem Gol antes do minuto"], 
+                placeholder: "10:00 - 80:00"},
         ]
         
         const predefined = [
@@ -257,7 +269,7 @@
     function load_searches() { 
         function regexExp(string) {
             const palavra =  string.replaceAll(
-                /[.*+?^${}()|[\]\\: ]/g, '\\$&')
+                /[.*+?^${}()|[\]\\\/: ]/g, '\\$&')
                 .replace(/\d°/g, "\\3$&"); 
             return palavra
         }

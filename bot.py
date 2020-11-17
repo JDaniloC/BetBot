@@ -61,6 +61,8 @@ class BetBot:
                 title = "Minutos - Resultado"
             elif re.match("Próximos 10 Minutos", title):
                 title = f"10 Minutos - Escanteios" if opcao == "Escanteios" else "Gols em Dez Minutos"
+            elif re.match("Handicap", title):
+                title = "Handicap Asiático"
             return title
 
         jogos = [0]
@@ -89,16 +91,21 @@ class BetBot:
                 
                 casa, fora = nome_times(self.fast)
                 for aposta in self.config['search']:
-                    title, column, valor = aposta
+                    title, column, value, search = aposta
                     title = replace_team_names(title, casa, fora)
                     column = replace_team_names(column, casa, fora)
-                    if len(column) == 3: column = tuple(column)
+
                     opcao = procura_opcao(self.fast, title)
                     if not opcao:
                         continue
-                    if procura_aposta(opcao, column, self.minOdd):
+                    try:
+                        aposta = procura_aposta(
+                        opcao, column, self.minOdd, search)
+                    except: continue
+                    if aposta:
                         title = tradutor(title, column[0])
-                        adicionar_valor(self.wait, self.fast, title, valor)
+                        adicionar_valor(
+                            self.wait, self.fast, title, value)
                         tirar_aposta(self.fast)
                         selecionadas += 1
                         if selecionadas >= self.maxBet:

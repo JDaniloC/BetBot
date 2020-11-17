@@ -97,13 +97,13 @@ def abrir_opcoes(wait: WebDriverWait):
                 break
 
 def selecionar_info_tabela(opcao: WebElement, info: str, medida: str, 
-    minOdd: float, predefined:bool = False) -> WebElement or bool:
-    rowName = ".srb-ParticipantLabelCentered " if not predefined else ".srb-ParticipantLabel_Name "
+    minOdd: float, search:str) -> WebElement or bool:
+    rowName = (".srb-ParticipantLabelCentered " if search == "table1" 
+        else ".srb-ParticipantLabel_Name ")
     row = -1
     for index, linha in enumerate(
         encontra_filhos(opcao, rowName)):
         linha = linha.text.lower().strip()
-        print(medida.lower(), linha)
         if medida.lower() == linha:
             row = index
             break
@@ -112,8 +112,7 @@ def selecionar_info_tabela(opcao: WebElement, info: str, medida: str,
     column = 0
     for index, coluna in enumerate(
         encontra_filhos(opcao, '.gl-MarketColumnHeader ')):
-        print(info.lower(), coluna.text.lower())
-        if index != 0 and info.lower() in coluna.text.lower():
+        if info.lower() in coluna.text.lower():
             column = index
             break
 
@@ -122,6 +121,29 @@ def selecionar_info_tabela(opcao: WebElement, info: str, medida: str,
     if float(botao.text) > minOdd:
         return botao
     print(f"Odd inferior ao requerido: {float(botao.text)} < {minOdd}")
+    return False
+
+def selecionar_info_tabela2(opcao: WebElement, info: str, medida: str, 
+    minOdd: float) -> WebElement or bool:
+    column = 0
+    for index, coluna in enumerate(
+        encontra_filhos(opcao, '.gl-MarketColumnHeader ')):
+        if info.lower() in coluna.text.lower():
+            column = index
+            break
+    
+    for index, linha in enumerate(
+        encontra_filhos(encontra_filhos(opcao, ".gl-Market "
+            )[column], ".gl-ParticipantCentered")):
+        texto, odd = linha.text.lower().strip().split()
+        if medida.lower() == texto:
+            botao = linha
+            if float(odd) > minOdd:
+                return botao
+            else:
+                print(f"Odd inferior ao requerido: {float(botao.text)} < {minOdd}")
+            break
+
     return False
 
 def seleciona_info_botoes(
@@ -136,14 +158,16 @@ def seleciona_info_botoes(
                 break
     return False
 
-def procura_aposta(
-    opcao: WebElement, info: str or tuple, minOdd: float) -> bool:
-    if type(info) == list:
+def procura_aposta(opcao: WebElement, info: str or list, 
+    minOdd: float, search: str) -> bool:
+    if search != "options":
         coluna, medida = info
-        botao = selecionar_info_tabela(opcao, coluna, medida, minOdd)
-    elif type(info) == tuple:
-        coluna, medida, _ = info
-        botao = selecionar_info_tabela(opcao, coluna, medida, minOdd, True)
+        if search != "table2":
+            botao = selecionar_info_tabela(
+                opcao, coluna, medida, minOdd, search)
+        else: 
+            botao = selecionar_info_tabela2(
+                opcao, coluna, medida, minOdd)
     else:
         botao = seleciona_info_botoes(opcao, info, minOdd)
     
@@ -158,8 +182,9 @@ def procura_opcao(wait: WebDriverWait, nome: str) -> WebElement or bool:
     for opcao in opcoes:
         titulo = encontra_filhos(opcao, '.sip-MarketGroupButton ')[0]
         if re.match(nome, titulo.text.lower()):
-            print("\n", titulo.text.lower())
+            print("\nprocura_opcao:", titulo.text.lower())
             return opcao
+    print("procura_opcao NOT", nome)
     return False
 
 def adicionar_valor(
@@ -186,6 +211,7 @@ def atribuir_valor(wait: WebDriverWait, title:str, valor: float) -> bool:
         ".bss-NormalBetItem_ContentWrapper ")
     title = re.escape(title).replace("X", "\d").lower()
     for jogada in reversed(jogadas):
+        print(title, jogada.text.lower().strip())
         if re.search(title, jogada.text.lower().strip()):
             encontra_filhos(jogada, 
                 ".bss-StakeBox_StakeValueInput"
@@ -193,15 +219,7 @@ def atribuir_valor(wait: WebDriverWait, title:str, valor: float) -> bool:
             return True
     return False
 
-    entradas = encontra_elementos(wait, ".bss-StakeBox_StakeValueInput")
-    for entrada in entradas:
-        if entrada.get_attribute("value") == "Valor de Aposta":
-            entrada.send_keys(str(valor))
-            return True
-    return False
-
 # Informações
-
 def abrir_escanteios(wait: WebDriverWait) -> bool:
     for opcao in encontra_elementos(wait, ".ipe-GridHeaderTabLink "):  
         if "Escanteios" in opcao.text: 
@@ -224,7 +242,6 @@ def numero_gols(jogo: WebElement) -> list[int]:
     lista_gols = encontra_filhos(jogo,
         ".him-StandardScores_Scores "
     )[0].text.split("\n")
-    # print("Gols:", " x ".join(lista_gols))
     return list(map(int, lista_gols))
 
 def numero_escanteios(wait: WebDriverWait) -> int:
@@ -235,7 +252,6 @@ def numero_escanteios(wait: WebDriverWait) -> int:
 
 
 # Base
-
 def apertar_botao(wait: WebDriverWait, selector: str):
     wait.until(EC.element_to_be_clickable(
         (By.CSS_SELECTOR, selector)
