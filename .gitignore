@@ -1,4 +1,3 @@
 __pycache__
-login.txt
-accounts.json
 debug.log
+env.py

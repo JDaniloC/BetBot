@@ -7,10 +7,7 @@ function shakeInputs() {
             { transform: 'translateX(-10px)' },
             { transform: 'translateX(10px)' },
             { transform: 'translateX(0px)' }
-        ], { 
-            duration: 150,
-            iterations: 2
-        }
+        ],  { duration: 150, iterations: 2 }
     ]
 
     username.parentElement.animate(
@@ -48,6 +45,7 @@ function load_license(account) {
     const actual_value = account.license.actual_value.toFixed(2)
     fill_field("#original_value", `R$${original_value}`)
     fill_field("#actual_value", `R$${actual_value}`)
+    fill_field("#actual_value2", `R$${actual_value}`)
     fill_field("#today_gain", "R$0,00")
     fill_field("#from_date", account.license.from_date)
     fill_field("#to_date", account.license.to_date)

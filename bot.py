@@ -2,7 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from widgets import *
 
 class BetBot:
-    def __init__(self, config):
+    def __init__(self, config, Updater):
         self.config = config
         self.browser = Browser()
         self.fast = WebDriverWait(self.browser, 5)
@@ -17,6 +17,8 @@ class BetBot:
         tirar_notificacoes(self.browser, self.wait)
 
         self.banca_inicial = banca(self.fast)
+        Updater.update_balance(self.banca_inicial)
+
         self.saldo = 0
         self.minOdd = self.config["filters"]["minOdd"]
         self.golsFilter = (self.config["filters"]['golsFilter'][1] 
@@ -55,20 +57,30 @@ class BetBot:
             return column
 
         def tradutor(title, opcao):
-            if re.match("Hora do Xº Gol", title):
+            if re.search(re.escape("Hora do Xº Gol"), title):
                 title = "Momento do Próximo Gol"
-            elif re.match("Resultado do Jogo", title):
+            elif re.search(re.escape("Resultado do Jogo"), title):
                 title = "Minutos - Resultado"
-            elif re.match("Próximos 10 Minutos", title):
-                title = f"10 Minutos - Escanteios" if opcao == "Escanteios" else "Gols em Dez Minutos"
-            elif re.match("Handicap", title):
+            elif re.search(re.escape("Próximos 10 Minutos"), title):
+                title = (f"10 Minutos - Escanteios" if opcao == "Escanteios" 
+                    else "Gols em Dez Minutos")
+            elif re.search(re.escape("Handicap"), title):
                 title = "Handicap Asiático"
+            elif re.search(re.escape("- Golos"), title):
+                title = ("Time da Casa - Gols" if title.split()[0] == "casa" 
+                    else "Time Visitante - Gols")
+            elif title == "Escanteios":
+                title = "Próximo Escanteio"
+            elif title == "Resultado do Jogo - Tempo":
+                title = "Minutos - Resultado"
+            elif title == "1ª Parte - Gols +/- (X-X)":
+                title = "tempo - gols +/-"
             return title
 
-        jogos = [0]
-        i = 0
-        selecionadas = 0
+        # import pdb; pdb.set_trace()
+        jogos, selecionadas, i = [0], 0, 0
         while i < len(jogos) and selecionadas < self.maxBet:
+            apertar_botao(self.fast, ".hm-MainHeaderLogoWide_Bet365LogoImage ")
             jogos = devolve_jogos(self.wait)
             if i >= len(jogos): continue
             jogo = jogos[i]
@@ -92,10 +104,10 @@ class BetBot:
                 casa, fora = nome_times(self.fast)
                 for aposta in self.config['search']:
                     title, column, value, search = aposta
-                    title = replace_team_names(title, casa, fora)
+                    titleT = replace_team_names(title, casa, fora)
                     column = replace_team_names(column, casa, fora)
 
-                    opcao = procura_opcao(self.fast, title)
+                    opcao = procura_opcao(self.fast, titleT)
                     if not opcao:
                         continue
                     try:
@@ -103,7 +115,8 @@ class BetBot:
                         opcao, column, self.minOdd, search)
                     except: continue
                     if aposta:
-                        title = tradutor(title, column[0])
+                        title = tradutor(title, column[1])
+                        print(title)
                         adicionar_valor(
                             self.wait, self.fast, title, value)
                         tirar_aposta(self.fast)
@@ -111,7 +124,8 @@ class BetBot:
                         if selecionadas >= self.maxBet:
                             break
                     time.sleep(7)
-                apertar_botao(self.fast, ".hm-MainHeaderLogoWide_Bet365LogoImage ")
+                if selecionadas > 0: time.sleep(15)
+        tirar_aposta(self.fast)
         if selecionadas > 0:
             self.num_apostas += selecionadas
             apostar()

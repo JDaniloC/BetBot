@@ -108,11 +108,11 @@
             td.className = "options-container"
             element.titles.forEach(title => {
                 const label = createLabel(
-                    `${element.name}|${row}`, title)
+                    `${element.name}|${title}`, title)
                 const input = label.children[0];
 
                 input.setAttribute("searchtype", "table3")
-                input.setAttribute("name", title);
+                input.setAttribute("name", row);
                 input.removeEventListener('click', handleSelect);
                 input.addEventListener('click', () => {
                     handleSelecTable(input);
@@ -209,10 +209,10 @@
                 name: 'Total de Gols - X° Tempo', titles: maisMenos, 
                 max: 2, onInput: floatFormatter, placeholder: 'Ex: 0.5' },
             { 
-                name: '1° Parte - Handicap Asiático (X-X)', titles: casaFora, 
+                name: '1ª Parte - Handicap Asiático (X-X)', titles: casaFora, 
                 max: 9, onInput: handicapFormatter, placeholder: "Ex: 0.0,-0.5" },
             { 
-                name: '1° Parte - Gols +/- (X-X)', titles: maisMenos, max: 9,
+                name: '1ª Parte - Gols +/- (X-X)', titles: maisMenos, max: 7,
                 onInput: intervalFormatter, placeholder: "Ex: 2.5,3.0" },
             { 
                 name: 'Resultado Correcto - Intervalo', titles: [1, "X", 2], 
@@ -224,15 +224,15 @@
                 name: 'Resultado do Jogo - Tempo', titles: ["casa", "Empate", "fora"],
                 max: 5, onInput: timeFormatter, placeholder: "10:00 - 80:00"},
             { 
-                name: 'Hora do Xº Gol', max: 5, onInput: timeFormatter,
+                name: 'Hora do X° Gol', max: 5, onInput: timeFormatter,
                 titles: ["Gol antes do minuto", "Sem Gol antes do minuto"], 
                 placeholder: "10:00 - 80:00"},
             { 
-                name: 'Hora do Xº Gol - casa', max: 5, onInput: timeFormatter,
+                name: 'Hora do X° Gol - casa', max: 5, onInput: timeFormatter,
                 titles: ["Gol antes do minuto", "Sem Gol antes do minuto"], 
                 placeholder: "10:00 - 80:00"},
             { 
-                name: 'Hora do Xº Gol - fora', max: 5, onInput: timeFormatter,
+                name: 'Hora do X° Gol - fora', max: 5, onInput: timeFormatter,
                 titles: ["Gol antes do minuto", "Sem Gol antes do minuto"], 
                 placeholder: "10:00 - 80:00"},
         ]
@@ -242,7 +242,7 @@
                 name: 'Método de Vitória', titles: casaFora, rows: ["Ganhar em 90 minutos", 
                 "Para Ganhar na Prorrogação", "Para Ganhar Após os Pênaltis"]},
             { 
-                name: 'Escanteios', titles: ["2° Canto", "Último"], rows: casaFora},
+                name: 'Escanteios', titles: ["Xº Canto", "Último"], rows: casaFora},
             { 
                 name: "Resultado/Para Ambos os Times Marcarem", 
                 titles: ["Sim", "Não"], rows: ["casa", "fora", "Empate"]},

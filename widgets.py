@@ -79,7 +79,8 @@ def tirar_aposta(wait: WebDriverWait):
         if encontra_filhos(aposta, ".bss-StakeBox_StakeValue-empty ") != []:
             try: encontra_filhos(aposta, ".bss-NormalBetItem_Remove")[0].click()
             except: pass
-    apertar_botao(wait, ".bss-DefaultContent_Close ")   
+    try: apertar_botao(wait, ".bss-DefaultContent_Close ")   
+    except: apertar_botao(wait, ".bsm-BetslipStandardModule_Overlay ")
 
 def abrir_opcoes(wait: WebDriverWait):
     time.sleep(6)
@@ -110,17 +111,25 @@ def selecionar_info_tabela(opcao: WebElement, info: str, medida: str,
     if row == -1: return False
 
     column = 0
+    info = re.escape(info).replace("X", "\d").lower()
     for index, coluna in enumerate(
         encontra_filhos(opcao, '.gl-MarketColumnHeader ')):
-        if info.lower() in coluna.text.lower():
+        coluna = coluna.text.lower()
+        if re.search(info, coluna):
             column = index
             break
 
+    columnName = (".gl-ParticipantOddsOnly" if search == "table1" 
+        else ".gl-Participant_General ")
     botao =  encontra_filhos(encontra_filhos(
-        opcao, ".gl-Market ")[column], ".gl-ParticipantOddsOnly")[row]
-    if float(botao.text) > minOdd:
-        return botao
-    print(f"Odd inferior ao requerido: {float(botao.text)} < {minOdd}")
+        opcao, ".gl-Market ")[column], columnName)[row]
+
+    texto_btn = botao.text.split()
+    if len(texto_btn) == 2: texto_btn = float(texto_btn[1])
+    else: texto_btn = float(texto_btn[0])
+    if texto_btn > minOdd: return botao
+
+    print(f"Odd inferior ao requerido: {texto_btn} < {minOdd}")
     return False
 
 def selecionar_info_tabela2(opcao: WebElement, info: str, medida: str, 
@@ -177,13 +186,16 @@ def procura_aposta(opcao: WebElement, info: str or list,
     return False
 
 def procura_opcao(wait: WebDriverWait, nome: str) -> WebElement or bool:
-    nome = re.escape(nome).replace("X", "\d").lower()
+    nome = re.escape(nome).replace("X", "\d").lower() + "$"
     opcoes = encontra_elementos(wait, '.sip-MarketGroup ')
     for opcao in opcoes:
-        titulo = encontra_filhos(opcao, '.sip-MarketGroupButton ')[0]
-        if re.match(nome, titulo.text.lower()):
-            print("\nprocura_opcao:", titulo.text.lower())
-            return opcao
+        try:
+            titulo = encontra_filhos(opcao, '.sip-MarketGroupButton ')[0]
+            titulo = titulo.text.strip().lower().replace("º", "°")
+            if re.match(nome, titulo):
+                print("\nprocura_opcao:", titulo)
+                return opcao
+        except Exception as e: print(e)
     print("procura_opcao NOT", nome)
     return False
 
@@ -209,7 +221,7 @@ def adicionar_valor(
 def atribuir_valor(wait: WebDriverWait, title:str, valor: float) -> bool:
     jogadas = encontra_elementos(wait, 
         ".bss-NormalBetItem_ContentWrapper ")
-    title = re.escape(title).replace("X", "\d").lower()
+    title = re.escape(title).replace("X", "\d").lower().replace("°", "º")
     for jogada in reversed(jogadas):
         print(title, jogada.text.lower().strip())
         if re.search(title, jogada.text.lower().strip()):

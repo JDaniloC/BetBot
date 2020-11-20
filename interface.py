@@ -1,17 +1,28 @@
 import eel, json, time, threading
 from datetime import datetime
+from database import MongoDB
 from bot import BetBot
+
+class Updater:
+    def __init__(self):
+        self.MongoDB = MongoDB
+        self.account = {}
+
+    def update_balance(self, balance):
+        self.account["license"]['actual_value'] = balance
+        self.MongoDB.modifica_usuario(self.account)
+        eel.updateBalance(balance)
+    def session_gain(balance):
+        eel.sessionGain(balance)
+    def expire_warning():
+        eel.expireWarning()
 
 @eel.expose
 def handle_login(account):
-    with open("accounts.json") as file:
-        conta = list(filter(
-            lambda x: x['username'] == account['username'],
-            json.load(file)))
-    if len(conta) == 1 and conta[0]['password'] == account['password']:
-        conta = conta[0]
+    conta = MongoDB.login(account["username"], account["password"])
+    if conta:
         if conta["license"]['to_date'] < time.time():
-            print("Tela de que expirou a licença")
+            Updater.expire_warning()
             return False
 
         conta["license"]['from_date'] = datetime.fromtimestamp(
@@ -23,7 +34,8 @@ def handle_login(account):
 
 @eel.expose
 def operate(account):
-    bot = BetBot(account)
+    bot = BetBot(account, Updater)
+    Updater.account = account
     threading.Thread(target=bot.start,
         daemon = True).start()
 
