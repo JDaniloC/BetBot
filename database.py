@@ -8,14 +8,13 @@ users_schema = {
     "license": {
         "from_date": 0,
         "to_date": 0,
-        "original_value": 0.0, 
+        "original_value": -1, 
         "actual_value": 0.0
     },
     "settings": {
         "stopWin": 0,
         "stopLoss": 0,
-        "maxBet": 1,
-        "maxGales": 0
+        "maxBet": 1
     },
     "filters": {
         "golsFilter": [False, [0, 0]],
@@ -59,6 +58,8 @@ class Mongo:
         Modifica as informações do usuário de determinado usuário
         '''
         user = self.remover_usuario(username)
+        info['license']['from_date'] = user['license']['from_date']
+        info['license']['to_date'] = user['license']['to_date']
         user.update(info)
         self.Users_collection.insert_one(user)
 

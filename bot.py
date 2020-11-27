@@ -14,6 +14,7 @@ class BetBot:
 
         # Login
         login(self.wait, config["username"], config["password"])
+        del config["password"]
         tirar_notificacoes(self.browser, self.wait)
 
         self.banca_inicial = banca(self.fast)
@@ -45,9 +46,17 @@ class BetBot:
     def percorrer_jogos(self):
         def apostar():
             apertar_botao(self.fast, ".bss-DefaultContent ")
-            apertar_botao(self.fast, ".bs-AcceptButton ")
-            apertar_botao(self.fast, ".bss-PlaceBetButton_Wrapper ")
-            apertar_botao(self.fast, ".bs-ReceiptContent_Done ")
+            efetuado, encontrou = 0, []
+            while efetuado < 3 and encontrou == []:
+                encontrou = self.browser.find_elements_by_css_selector(
+                    ".bss-PlaceBetButton_Wrapper ")
+                efetuado += 1
+                try: 
+                    apertar_botao(self.fast, ".bs-AcceptButton ")
+                    apertar_botao(self.fast, ".bss-PlaceBetButton_Wrapper ")
+                    efetuado = 3
+                except: pass
+            apertar_botao(self.fast, ".bss-ReceiptContent_Done ")
 
         def replace_team_names(column, casa, fora):
             replaces = lambda x: x.replace("casa", casa).replace("fora", fora)
@@ -77,7 +86,6 @@ class BetBot:
                 title = "tempo - gols +/-"
             return title
 
-        # import pdb; pdb.set_trace()
         jogos, selecionadas, i = [0], 0, 0
         while i < len(jogos) and selecionadas < self.maxBet:
             apertar_botao(self.fast, ".hm-MainHeaderLogoWide_Bet365LogoImage ")
@@ -121,6 +129,7 @@ class BetBot:
                             self.wait, self.fast, title, value)
                         tirar_aposta(self.fast)
                         selecionadas += 1
+                        print("Ativas", selecionadas)
                         if selecionadas >= self.maxBet:
                             break
                     time.sleep(7)
@@ -129,4 +138,5 @@ class BetBot:
         if selecionadas > 0:
             self.num_apostas += selecionadas
             apostar()
+            apertar_botao(self.fast, ".hm-HeaderMenuItemMyBets ")
         print("Fim")
