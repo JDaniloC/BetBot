@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from env import autenticacao
+from env import autenticacao # autenticacao = "mongodb+srv://..."
 import time, hashlib
 
 users_schema = {
@@ -86,7 +86,7 @@ class Mongo:
         elif opcao == "time":
             data = time.time() + 2592000
             self.Users_collection.update_many(
-                {}, {'$set': {'timestamp': data}})
+                {}, {'$set': {'license.to_date': data}})
 
 client =  MongoClient(autenticacao)
 Database = client.betbot 
