@@ -5,17 +5,17 @@
 
 > Um automatizador de apostas para a plataforma Bet365. O objetivo foi de criar uma interface responsiva, mas que se comunique com o script python. 
 
-<!-- <div align="center">
+<div align="center">
 	<h2> Idiomas | Languages </h2>
-	<a href="">
+	<a href="https://jdaniloc.github.io/Individual-Bet365Bot/pt/">
 		<img src="docs/images/br.png "
 		alt="Português" width="50" height="50" />
 	</a>
-	<a href="">
+	<a href="https://jdaniloc.github.io/Individual-Bet365Bot/en/">
 		<img src="docs/images/en.png "
 		alt="English" width="50" height="50"/>
 	</a>
-</div><br><br> -->
+</div><br><br>
 
 ## Tecnologias usadas
 - Selenium para controle na Bet365.
