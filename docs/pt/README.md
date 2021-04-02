@@ -1,4 +1,4 @@
-# BetBot
+## [BetBot](https://github.com/JDaniloC/Individual-Bet365Bot)
 
 ![BetBot Video](../images/video.gif)
 
