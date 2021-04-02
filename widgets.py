@@ -1,8 +1,9 @@
-from selenium.webdriver import Chrome, ChromeOptions, FirefoxProfile, Firefox, DesiredCapabilities
+from selenium.webdriver import FirefoxProfile, Firefox, DesiredCapabilities
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
+from typing import Tuple, List
 import time, re
 
 # Classes
@@ -17,7 +18,7 @@ class Browser(Firefox):
         super().__init__(firefox_profile=profile, desired_capabilities=desired)
 
 # Abstrações
-def rolar_pagina(browser, valor):
+def rolar_pagina(browser: Firefox, valor: int):
     browser.execute_script(f"window.scroll(0, window.pageYOffset + {valor})")
 
 def login(wait: WebDriverWait, email: str, password: str):
@@ -26,7 +27,7 @@ def login(wait: WebDriverWait, email: str, password: str):
     preencher_campo(wait, ".lms-StandardLogin_Password ", password)
     apertar_botao(wait, ".lms-StandardLogin_LoginButton ")
 
-def tirar_notificacoes(browser: Chrome, wait: WebDriverWait):
+def tirar_notificacoes(browser: Firefox, wait: WebDriverWait):
     try:
         browser.switch_to.frame(encontra_elementos(wait, ".lp-UserNotificationsPopup_Frame ")[0])
         apertar_botao(wait, "#remindLater")
@@ -229,12 +230,12 @@ def banca(wait: WebElement) -> float:
     print("Banca:", texto_banca)
     return float(texto_banca.strip("R$").replace(",", "."))
 
-def nome_times(wait: WebDriverWait) -> tuple[str]:
+def nome_times(wait: WebDriverWait) -> Tuple[str]:
     return encontra_elementos(
         wait, ".ipe-EventHeader_Fixture"
     )[0].text.split(" v ")
 
-def numero_gols(jogo: WebElement) -> list[int]:
+def numero_gols(jogo: WebElement) -> List[int]:
     lista_gols = encontra_filhos(jogo,
         ".him-StandardScores_Scores "
     )[0].text.split("\n")
@@ -262,10 +263,10 @@ def preencher_campo(wait: WebDriverWait, selector: str, valor: str):
         (By.CSS_SELECTOR, selector))
     ).send_keys(valor)
 
-def encontra_filhos(element: WebElement, selector: str) -> list[WebElement]:
+def encontra_filhos(element: WebElement, selector: str) -> List[WebElement]:
     return element.find_elements_by_css_selector(selector)
 
-def encontra_elementos(wait: WebDriverWait, selector: str) -> list[WebElement]:
+def encontra_elementos(wait: WebDriverWait, selector: str) -> List[WebElement]:
     return wait.until(
         EC.presence_of_all_elements_located(
             (By.CSS_SELECTOR, selector)))

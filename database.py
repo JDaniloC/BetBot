@@ -1,3 +1,5 @@
+from pymongo.database import Database as DatabaseType
+from pymongo.collection import Collection
 from pymongo import MongoClient
 from env import autenticacao # autenticacao = "mongodb+srv://..."
 import time, hashlib
@@ -23,15 +25,16 @@ users_schema = {
     },
     "search": []
 }
-def criptografa(password):
+def criptografa(password:str):
     return hashlib.md5(password.encode("utf-8")).hexdigest()
 
 class Mongo:
-    def __init__(self, database, users_collection):
+    def __init__(self, database: DatabaseType, 
+        users_collection: Collection):
         self.database = database
         self.Users_collection = users_collection
 
-    def cadastrar(self, username, password):
+    def cadastrar(self, username:str, password:str):
         '''
         Adiciona um novo usuário
         '''
@@ -43,7 +46,7 @@ class Mongo:
         user["_id"] = time.time()
         self.Users_collection.insert_one(user)
 
-    def renovar_licenca(self, username):
+    def renovar_licenca(self, username:str):
         '''
         Aumenta a licença de determinado usuário
         '''
@@ -53,7 +56,7 @@ class Mongo:
                 'license.to_date': data,
         }})
 
-    def modifica_usuario(self, info, username):
+    def modifica_usuario(self, info: dict, username:str):
         '''
         Modifica as informações do usuário de determinado usuário
         '''
@@ -63,7 +66,7 @@ class Mongo:
         user.update(info)
         self.Users_collection.insert_one(user)
 
-    def remover_usuario(self, username):
+    def remover_usuario(self, username:str):
         '''
         Remove o usuário de determinado username
         Devolve o usuário removido
@@ -71,7 +74,7 @@ class Mongo:
         return self.Users_collection.find_one_and_delete(
             {'username': username})
 
-    def login(self, username, password):
+    def login(self, username:str, password:str) -> bool:
         '''
         Devolve as informações do usuário a partir do nome do usuário
         '''
@@ -80,7 +83,7 @@ class Mongo:
             return user
         return False
 
-    def modificar_banco_users(self, opcao):
+    def modificar_banco_users(self, opcao:str):
         if opcao == "clear":
             self.Users_collection.delete_many({})
         elif opcao == "time":
