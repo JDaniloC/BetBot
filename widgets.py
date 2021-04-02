@@ -1,4 +1,4 @@
-from selenium.webdriver import Chrome, ChromeOptions
+from selenium.webdriver import Chrome, ChromeOptions, FirefoxProfile, Firefox, DesiredCapabilities
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -6,25 +6,15 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time, re
 
 # Classes
-
-class Browser(Chrome):
+class Browser(Firefox):
     def __init__(self):
-        options = ChromeOptions()
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option('useAutomationExtension', False)
-        options.add_argument("--start-maximized")
-        
-        super().__init__(options = options)
+        profile = FirefoxProfile()
+        profile.set_preference("dom.webdriver.enabled", False)
+        profile.set_preference('useAutomationExtension', False)
+        profile.update_preferences()
+        desired = DesiredCapabilities.FIREFOX
 
-        self.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
-        "source": """
-        Object.defineProperty(navigator, 'webdriver', {
-            get: () => undefined 
-        })"""})
-
-        self.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'
-        })
+        super().__init__(firefox_profile=profile, desired_capabilities=desired)
 
 # Abstrações
 def rolar_pagina(browser, valor):
