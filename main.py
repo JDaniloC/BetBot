@@ -1,7 +1,7 @@
 import eel, time, threading
 from datetime import datetime
-from database import MongoDB
-from bot import BetBot
+from src.database import MongoDB
+from src.bot import BetBot
 
 class Updater:
     def __init__(self, account:dict):
@@ -42,5 +42,5 @@ def operate(account:dict):
     threading.Thread(target=bot.start,
         daemon = True).start()
 
-eel.init('web')
+eel.init('src/web')
 eel.start('index.html')

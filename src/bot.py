@@ -1,5 +1,5 @@
 from selenium.webdriver.support.ui import WebDriverWait
-from widgets import *
+from src.widgets import *
 
 class BetBot:
     def __init__(self, config: dict, Updater: object):
