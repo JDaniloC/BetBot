@@ -9,7 +9,6 @@ class Updater:
         self.account = account
 
     def update_balance(self, balance):
-        print(self.account)
         self.account["license"]['actual_value'] = balance
         if self.account["license"]['original_value'] == -1:
             self.account["license"]['original_value'] = balance
@@ -22,7 +21,8 @@ class Updater:
 
 @eel.expose
 def handle_login(account):
-    conta = MongoDB.login(account["username"], account["password"])
+    conta = MongoDB.login(
+        account["username"], account["password"])
     if conta:
         if conta["license"]['to_date'] < time.time():
             Updater.expire_warning()
