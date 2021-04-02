@@ -2,7 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from widgets import *
 
 class BetBot:
-    def __init__(self, config, Updater):
+    def __init__(self, config: dict, Updater: object):
         self.config = config
         self.browser = Browser()
         self.fast = WebDriverWait(self.browser, 5)
@@ -37,7 +37,7 @@ class BetBot:
             pass
         print("Fim da operação")
 
-    def bateu_stop(self):
+    def bateu_stop(self) -> bool:
         if (self.saldo > self.config["settings"]["stopWin"] or
             self.saldo > self.config["settings"]["stopLoss"]):
             return True
@@ -58,14 +58,14 @@ class BetBot:
                 except: pass
             apertar_botao(self.fast, ".bss-ReceiptContent_Done ")
 
-        def replace_team_names(column, casa, fora):
+        def replace_team_names(column: list or str, casa: str, fora: str) -> str or list:
             replaces = lambda x: x.replace("casa", casa).replace("fora", fora)
             if type(column) == list:
                 column = [replaces(x) for x in column]
             else: column = replaces(column)
             return column
 
-        def tradutor(title, opcao):
+        def tradutor(title:str, opcao:str) -> str:
             if re.search(re.escape("Hora do Xº Gol"), title):
                 title = "Momento do Próximo Gol"
             elif re.search(re.escape("Resultado do Jogo"), title):
