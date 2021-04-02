@@ -2,3 +2,4 @@ __pycache__
 env.py
 *.log
 betenv
+.python-version
