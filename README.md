@@ -3,7 +3,7 @@
 ![BetBot Video](./docs/images/video.gif)
 
 
-> Um automatizador de apostas para a plataforma Bet365. O objetivo foi de criar uma interface responsiva, mas que se comunique com o script python. 
+> Um automatizador de apostas para a plataforma Bet365. O objetivo foi de criar uma interface responsiva, mas que se comunique com o script python. Funciona até o Firefox 85.0.2 ([#10](https://github.com/JDaniloC/Individual-Bet365Bot/issues/10)).
 
 <div align="center">
 	<h2> Idiomas | Languages </h2>
