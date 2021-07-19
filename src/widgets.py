@@ -2,12 +2,13 @@ from selenium.webdriver import FirefoxProfile, Firefox, DesiredCapabilities
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+import undetected_chromedriver.v2 as Browser_uc
 from selenium.webdriver.common.by import By
 from typing import Tuple, List
 import time, re
 
 # Classes
-class Browser(Firefox):
+class FirefoxBrowser(Firefox):
     def __init__(self):
         profile = FirefoxProfile()
         profile.set_preference("dom.webdriver.enabled", False)
@@ -16,6 +17,8 @@ class Browser(Firefox):
         desired = DesiredCapabilities.FIREFOX
 
         super().__init__(firefox_profile=profile, desired_capabilities=desired)
+
+ChromeBrowser = Browser_uc.Chrome
 
 # Abstrações
 def rolar_pagina(browser: Firefox, valor: int):
