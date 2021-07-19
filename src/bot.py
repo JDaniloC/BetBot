@@ -4,7 +4,7 @@ from src.widgets import *
 class BetBot:
     def __init__(self, config: dict, Updater: object):
         self.config = config
-        self.browser = Browser()
+        self.browser = ChromeBrowser()
         self.fast = WebDriverWait(self.browser, 5)
         self.wait = WebDriverWait(self.browser, 30)
 
@@ -35,7 +35,6 @@ class BetBot:
                 apertar_botao(self.fast, ".hm-MainHeaderLogoWide_Bet365LogoImage ")
         except KeyboardInterrupt:
             pass
-        print("Fim da operação")
 
     def bateu_stop(self) -> bool:
         if (self.saldo > self.config["settings"]["stopWin"] or
@@ -96,12 +95,11 @@ class BetBot:
             
             if filtra_tempo(jogo, self.config["filters"]['maxTime']):
                 if self.golsFilter and self.golsFilter != numero_gols(jogo):
-                    print("Pulando por número de Gols")
                     continue
                 
                 try: jogo.click()
                 except Exception as e: 
-                    print(e)
+                    print(type(e), e)
                     rolar_pagina(self.browser, 300)
                     jogo.click()
                 
@@ -124,12 +122,10 @@ class BetBot:
                     except: continue
                     if aposta:
                         title = tradutor(title, column[1])
-                        print(title)
                         adicionar_valor(
                             self.wait, self.fast, title, value)
                         tirar_aposta(self.fast)
                         selecionadas += 1
-                        print("Ativas", selecionadas)
                         if selecionadas >= self.maxBet:
                             break
                     time.sleep(7)
@@ -139,4 +135,3 @@ class BetBot:
             self.num_apostas += selecionadas
             apostar()
             apertar_botao(self.fast, ".hm-HeaderMenuItemMyBets ")
-        print("Fim")
