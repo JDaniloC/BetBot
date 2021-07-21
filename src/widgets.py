@@ -30,14 +30,15 @@ def login(wait: WebDriverWait, email: str, password: str):
     preencher_campo(wait, ".lms-StandardLogin_Password ", password)
     apertar_botao(wait, ".lms-StandardLogin_LoginButton ")
 
-def tirar_notificacoes(browser: Firefox, wait: WebDriverWait):
+def tirar_notificacoes(browser: Firefox, fast: WebDriverWait, wait: WebDriverWait):
     try:
         browser.switch_to.frame(encontra_elementos(wait, ".lp-UserNotificationsPopup_Frame ")[0])
         apertar_botao(wait, "#remindLater")
-        for i in range(2):
-            try: apertar_botao(wait, 
-                ".pm-PushTargetedMessageOverlay_CloseButton ")
-            except: pass
+        try: 
+            for _ in range(2):
+                apertar_botao(fast, ".pm-PushTargetedMessageOverlay_CloseButton ")
+                break
+        except: pass
     except: pass
 
 def devolve_jogos(wait: WebDriverWait) -> list:
@@ -184,12 +185,14 @@ def procura_opcao(wait: WebDriverWait, nome: str) -> WebElement or bool:
                 print("\nprocura_opcao:", titulo)
                 return opcao
         except Exception as e: print(e)
-    print("procura_opcao NOT", nome)
     return False
 
 def adicionar_valor(
     wait: WebDriverWait, fast: WebDriverWait, title:str, valor: float) -> bool:
     atribuiu = False
+
+    if atribuir_valor_single(wait, title, valor): return True
+
     try:
         time.sleep(2)
         apertar_botao(fast, ".bss-DefaultContent ")
@@ -197,7 +200,7 @@ def adicionar_valor(
     
     try:
         time.sleep(2)
-        atribuiu = atribuir_valor(wait, title, valor)
+        atribuiu = atribuir_valor_multi(wait, title, valor)
     except Exception as e: print(e)
 
     try:
@@ -206,7 +209,7 @@ def adicionar_valor(
 
     return atribuiu
 
-def atribuir_valor(wait: WebDriverWait, title:str, valor: float) -> bool:
+def atribuir_valor_multi(wait: WebDriverWait, title:str, valor: float) -> bool:
     jogadas = encontra_elementos(wait, 
         ".bss-NormalBetItem_ContentWrapper ")
     title = re.escape(title).replace("X", "\d").lower().replace("°", "º")
@@ -217,6 +220,17 @@ def atribuir_valor(wait: WebDriverWait, title:str, valor: float) -> bool:
                 ".bss-StakeBox_StakeValueInput"
             )[0].send_keys(str(valor))
             return True
+    return False
+
+def atribuir_valor_single(wait: WebDriverWait, title:str, valor: float) -> bool:    
+    try:
+        title = re.escape(title).replace("X", "\d").lower().replace("°", "º")
+        text_jogada = encontra_elementos(wait, ".qbs-NormalBetItem_Details")[0].text
+        if re.search(title, text_jogada.lower().strip()):
+            preencher_campo(wait,".qbs-StakeBox_StakeInput ", str(valor))
+            return True
+    except Exception as e:
+        print(type(e), e)
     return False
 
 # Informações
