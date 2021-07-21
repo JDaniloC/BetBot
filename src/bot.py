@@ -14,11 +14,12 @@ class BetBot:
 
         # Login
         login(self.wait, config["username"], config["password"])
+        time.sleep(2)
         del config["password"]
-        tirar_notificacoes(self.browser, self.wait)
-
-        self.banca_inicial = banca(self.fast)
-        Updater.update_balance(self.banca_inicial)
+        
+        try: self.pegar_banca()
+        except: self.pegar_banca()
+        # Updater.update_balance(self.banca_inicial)
 
         self.saldo = 0
         self.minOdd = self.config["filters"]["minOdd"]
@@ -26,15 +27,20 @@ class BetBot:
             if self.config["filters"]['golsFilter'][0] else False)
         self.maxBet = self.config["settings"]['maxBet']
         self.num_apostas = 0
+        print("Vou começar a percorrer")
+        self.start()
+
+    def pegar_banca(self):
+        tirar_notificacoes(self.browser, self.fast, self.wait)
+        self.banca_inicial = banca(self.fast)
 
     def start(self):
-        try:
-            while self.num_apostas < self.maxBet and not self.bateu_stop():
+        while self.num_apostas < self.maxBet and not self.bateu_stop():
+            try:
                 self.percorrer_jogos()
-                time.sleep(600)
-                apertar_botao(self.fast, ".hm-MainHeaderLogoWide_Bet365LogoImage ")
-        except KeyboardInterrupt:
-            pass
+            except KeyboardInterrupt: pass
+            time.sleep(600)
+            apertar_botao(self.fast, ".hm-MainHeaderLogoWide_Bet365LogoImage ")
 
     def bateu_stop(self) -> bool:
         if (self.saldo > self.config["settings"]["stopWin"] or
@@ -55,6 +61,7 @@ class BetBot:
                     apertar_botao(self.fast, ".bss-PlaceBetButton_Wrapper ")
                     efetuado = 3
                 except: pass
+                if encontrou == []: time.sleep(0.1)
             apertar_botao(self.fast, ".bss-ReceiptContent_Done ")
 
         def replace_team_names(column: list or str, casa: str, fora: str) -> str or list:
@@ -133,5 +140,8 @@ class BetBot:
         tirar_aposta(self.fast)
         if selecionadas > 0:
             self.num_apostas += selecionadas
-            apostar()
+            if selecionadas == 1:
+                apertar_botao(self.fast, ".qbs-AcceptButton ")
+            else: apostar()
             apertar_botao(self.fast, ".hm-HeaderMenuItemMyBets ")
+        print("Fim do programa")
