@@ -1,4 +1,4 @@
-bottle==0.12.19
+bottle==0.12.20
 bottle-websocket==0.2.9
 cffi==1.14.5
 dnspython==2.1.0
